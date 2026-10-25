@@ -14,84 +14,72 @@ canvas{display:block}
 <canvas id="c"></canvas>
 <div id="bot"><button id="zi">+</button><button id="zo">-</button><button id="sp">1x</button></div>
 <div id="menu"><h2>Dunyo 1775</h2><p>Davlatingizni tanlang:</p></div>
+<script src="map.js"></script>
 <script>
-const W=60,H=24;
-const RLE=["20.6-16.9R9.","4.15-1.6-6.2W24R2.","2.17-2.4-5.6W22R2.","2.12-2.3G9.1G1.4W24R2.","4.9-6G8.2G1.1N3K19R7.","4.11-4G9.2F3H7R3-8C9.","9.6-3U9.2S2F1-2T4.3R4-6C1.1J7.","10.5S3U9.1P2S7T4E3-6C1.2J7.","10.5S2U10.2Z7T4E3I6C1.2J8.","10.5S12.2Z4-2T2-3E5I4C11.","10.4S1.1S11.11-2.4I1.2-2C11.","10.5S12.10-3.3I2.3-1.1S10.","14.6S7.10-4.2I2.2-13.","16.3S1N7.9-8.3-1.2-10.","15.3S3P6.10-7.2-2.5-7.","15.3S4P5.9-10.2N2.4-6.","15.3S5P5.6-2P24.","15.4S4P6.6-1.2-10.5-7.","16.3S4P6.6-1.1-10.7-6.","16.3S3P9.4-12.7-6.","16.4S11.4-12.7-6.","16.4S11.2N14.7-3.2-1.","16.3S34.1-3.1-2.","16.2S42."];
-const N={G:["Buyuk Britaniya","#d33"],F:["Fransiya","#36c"],S:["Ispaniya","#e90"],P:["Portugaliya","#2a6"],R:["Rossiya","#5a3"],T:["Usmonlilar","#1bb"],H:["Gabsburglar","#ddd"],K:["Prussiya","#668"],N:["Niderlandiya","#f60"],W:["Shvetsiya","#4bd"],C:["Sin (Xitoy)","#fd0"],J:["Yaponiya","#f9c"],I:["Mugallar/Marata","#a5a"],E:["Eron","#8a5"],U:["13 koloniya","#59f"],Z:["Marokash","#a64"]};
-const own=[],tr=[];
-RLE.forEach(r=>{const row=[];
- r.replace(/(\d+)([.\-A-Z])/g,(m,n,ch)=>{for(let i=0;i<+n;i++)row.push(ch);return m;});
- while(row.length<W)row.push('.');row.length=W;
- own.push(row);tr.push(row.map(c=>c==='.'?0:4+Math.floor(Math.random()*5)));});
-const cv=document.getElementById('c'),g=cv.getContext('2d'),info=document.getElementById('info');
-let me=null,s=1,ox=0,oy=0,c0=10,months=0,speed=1,timer=null,over=false;
-function fit(){cv.width=innerWidth;cv.height=innerHeight;c0=innerWidth/W;
- if(!ox&&!oy)oy=(innerHeight-H*c0)/2;draw();}
+const {W,H,g:GR,P,A}=MAP,S=6,TOP=80,np=P.length;
+const N={G:["Buyuk Britaniya","#d33",0,52],F:["Fransiya","#36c",2,47],S:["Ispaniya","#e90",-4,40],P:["Portugaliya","#2a6",-8,39],R:["Rossiya","#5a3",37,56],T:["Usmonlilar","#1bb",29,41],H:["Gabsburglar","#ddd",16,48],K:["Prussiya","#668",13,52],N:["Niderlandiya","#f60",5,52],W:["Shvetsiya","#4bd",18,60],C:["Sin (Xitoy)","#fd0",116,40],J:["Yaponiya","#f9c",138,36],I:["Mugallar/Marata","#a5a",78,23],E:["Eron","#8a5",52,33],U:["13 koloniya","#59f",-75,40],Z:["Marokash","#a64",-6,33],D:["Daniya","#c9a",10,56],L:["Polsha-Litva","#ca5",21,52]};
+const own=P.map(p=>p[0]),tr=P.map(p=>p[0]==='-'?3+Math.floor(Math.random()*4):6+Math.floor(Math.random()*6));
+const cells=P.map(()=>[]);for(let i=0;i<GR.length;i++)if(GR[i]>=0)cells[GR[i]].push(i);
+const segs=[];
+for(let y=0;y<H;y++)for(let x=0;x<W;x++){const a=GR[y*W+x];if(a<0)continue;
+ if(x+1<W){const b=GR[y*W+x+1];if(b>=0&&b!==a)segs.push([x+1,y,0,a,b]);}
+ if(y+1<H){const b=GR[(y+1)*W+x];if(b>=0&&b!==a)segs.push([x,y+1,1,a,b]);}}
+const cv=document.getElementById('c'),cx=cv.getContext('2d'),info=document.getElementById('info'),menu=document.getElementById('menu');
+const oc=document.createElement('canvas');oc.width=W*S;oc.height=H*S;const og=oc.getContext('2d');
+let me=null,sc=1,ox=0,oy=0,c0=1,first=1,months=0,speed=1,timer=null,over=false,dirty=false,msg='',mt=0,st=[0,0];
+function paint(){
+ og.clearRect(0,0,oc.width,oc.height);
+ for(let p=0;p<np;p++){og.fillStyle=own[p]==='-'?'#7a8a6a':N[own[p]][1];
+  for(const c of cells[p])og.fillRect((c%W)*S,((c/W)|0)*S,S,S);}
+ for(const s of segs){const w=own[s[3]]!==own[s[4]]?2:1;og.fillStyle=w>1?'#000c':'#0005';
+  if(s[2])og.fillRect(s[0]*S,s[1]*S-1,S,w);else og.fillRect(s[0]*S-1,s[1]*S,w,S);}}
 function draw(){
- g.fillStyle="#0b2a45";g.fillRect(0,0,cv.width,cv.height);
- const c=c0*s;
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){
-  const o=own[y][x];if(o==='.')continue;
-  g.fillStyle=o==='-'?"#7a8a6a":N[o][1];
-  g.fillRect(ox+x*c,oy+y*c,c+0.5,c+0.5);
-  if(c>=10){g.strokeStyle="#0005";g.lineWidth=0.5;g.strokeRect(ox+x*c,oy+y*c,c,c);}
-  if(c>=18){g.fillStyle="#000b";g.font=(c*0.4)+"px sans-serif";g.fillText(tr[y][x],ox+x*c+2,oy+y*c+c*0.6);}
- }}
-function attack(x,y,tx,ty){
- const a=tr[y][x];if(a<3)return;
- const send=Math.floor(a*0.7);tr[y][x]=a-send;
- const d=tr[ty][tx],att=send*(0.9+Math.random()*0.4),def=d*(1+0.2*Math.random());
- if(att>def){own[ty][tx]=own[y][x];tr[ty][tx]=Math.max(1,Math.floor(send-def*0.6));}
- else tr[ty][tx]=Math.max(1,Math.floor(d-att*0.6));
-}
-function tap(px,py){
- if(!me||over)return;
- const c=c0*s,x=Math.floor((px-ox)/c),y=Math.floor((py-oy)/c);
- if(x<0||y<0||x>=W||y>=H)return;
- const o=own[y][x];if(o==='.'||o===me)return;
- let best=null,bt=0;
- for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
-  const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;
-  if(own[ny][nx]===me&&tr[ny][nx]>bt){bt=tr[ny][nx];best=[nx,ny];}}
- if(best){attack(best[0],best[1],x,y);}else{info.textContent="Chegaradan uzoq!";}
- draw();}
-function tick(){
- if(over)return;
- months++;
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){
-  const o=own[y][x];if(o==='.'||o==='-')continue;
-  if(tr[y][x]<40&&Math.random()<0.3)tr[y][x]++;}
+ cx.fillStyle='#0b2a45';cx.fillRect(0,0,innerWidth,innerHeight);
+ const c=c0*sc;cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
+ cx.drawImage(oc,ox,oy,W*c,H*c);
+ if(c>=3.2){cx.textAlign='center';cx.textBaseline='middle';cx.font='bold '+Math.min(16,c*2.6)+'px sans-serif';cx.lineWidth=3;cx.strokeStyle='#000b';cx.fillStyle='#fff';
+  for(let p=0;p<np;p++){const x=ox+(P[p][1]+.5)*c,y=oy+(P[p][2]+.5)*c;if(x<-20||y<-20||x>innerWidth+20||y>innerHeight+20)continue;cx.strokeText(tr[p],x,y);cx.fillText(tr[p],x,y);}}}
+function fit(){const d=devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(d,0,0,d,0,0);
+ c0=innerWidth/W;if(first){oy=(innerHeight-H*c0)/2;first=0;}draw();}
+function hud(){if(!me)return;info.textContent=Date.now()<mt?msg:N[me][0]+" | "+(1775+Math.floor(months/12))+"-yil, "+(months%12+1)+"-oy | Viloyat: "+st[0]+"/"+np+" | Qo'shin: "+st[1];}
+function note(t){msg=t;mt=Date.now()+2500;hud();}
+function attack(a,d){const t=tr[a];if(t<3){note("Qo'shin kam");return;}
+ const send=Math.floor(t*.7);tr[a]=t-send;const att=send*(.9+Math.random()*.4),df=tr[d]*(1+.2*Math.random());
+ if(att>df){own[d]=own[a];tr[d]=Math.max(1,Math.floor(send-df*.6));dirty=true;}else tr[d]=Math.max(1,Math.floor(tr[d]-att*.6));}
+function tap(px,py){if(!me||over)return;const c=c0*sc,x=Math.floor((px-ox)/c),y=Math.floor((py-oy)/c);
+ if(x<0||y<0||x>=W||y>=H)return;const d=GR[y*W+x];if(d<0)return;
+ if(own[d]===me){note("Sizning viloyat: "+tr[d]+" qo'shin");return;}
+ let b=-1;for(const a of A[d])if(own[a]===me&&(b<0||tr[a]>tr[b]))b=a;
+ if(b<0){note("Chegaradan uzoq!");return;}
+ attack(b,d);if(dirty){paint();dirty=false;}draw();hud();}
+function tick(){if(over)return;months++;
+ const cnt={};
+ for(let p=0;p<np;p++){const o=own[p];if(o==='-'){if(tr[p]<12&&Math.random()<.1)tr[p]++;}else{cnt[o]=(cnt[o]||0)+1;if(tr[p]<40&&Math.random()<.3)tr[p]++;}}
  const cand={};
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){
-  const o=own[y][x];if(o==='.'||o==='-'||o===me||tr[y][x]<6)continue;
-  let tg=null,tm=999;
-  for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
-   const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;
-   const p=own[ny][nx];if(p==='.'||p===o)continue;
-   if(tr[ny][nx]<tm){tm=tr[ny][nx];tg=[nx,ny];}}
-  if(tg&&tr[y][x]*0.7>tm*1.1)(cand[o]=cand[o]||[]).push([x,y,tg[0],tg[1]]);
- }
- for(const o in cand){if(Math.random()<0.5){const a=cand[o],m=a[Math.floor(Math.random()*a.length)];attack(m[0],m[1],m[2],m[3]);}}
- let mine=0,land=0,army=0;
- for(let y=0;y<H;y++)for(let x=0;x<W;x++){const o=own[y][x];if(o==='.')continue;land++;if(o===me){mine++;army+=tr[y][x];}}
- const yr=1775+Math.floor(months/12),mo=months%12+1;
- info.textContent=N[me][0]+" | "+yr+"-yil, "+mo+"-oy | Hudud: "+mine+"/"+land+" | Qo'shin: "+army;
- if(mine===0){over=true;alert("Yutqazdingiz!");}
- else if(mine>land*0.6){over=true;alert("G'alaba! Dunyo sizniki!");}
- draw();}
+ for(let p=0;p<np;p++){const o=own[p];if(o==='-'||o===me||tr[p]<6)continue;let tg=-1,tm=999;
+  for(const q of A[p]){if(own[q]!==o&&tr[q]<tm){tm=tr[q];tg=q;}}
+  if(tg>=0&&tr[p]*.7>tm*1.1)(cand[o]=cand[o]||[]).push([p,tg]);}
+ for(const o in cand){const n=1+Math.floor(cnt[o]/20);for(let i=0;i<n;i++){if(Math.random()<.5){const a=cand[o],m=a[Math.floor(Math.random()*a.length)];if(own[m[0]]===o&&own[m[1]]!==o)attack(m[0],m[1]);}}}
+ if(dirty){paint();dirty=false;}
+ let m=0,a=0;for(let p=0;p<np;p++)if(own[p]===me){m++;a+=tr[p];}st=[m,a];
+ if(m===0){over=true;msg="Yutqazdingiz!";mt=1e15;}else if(m>np*.5){over=true;msg="G'alaba! Dunyo sizniki!";mt=1e15;}
+ hud();draw();}
 function start(){clearInterval(timer);timer=setInterval(tick,1000/speed);}
+function zoomAt(x,y,k){const ns=Math.min(16,Math.max(1,sc*k));k=ns/sc;ox=x-(x-ox)*k;oy=y-(y-oy)*k;sc=ns;draw();}
 document.getElementById('sp').onclick=e=>{speed=speed===1?2:speed===2?4:1;e.target.textContent=speed+"x";if(me)start();};
-function zoom(k){const cx=innerWidth/2,cy=innerHeight/2;const ns=Math.min(6,Math.max(1,s*k));k=ns/s;ox=cx-(cx-ox)*k;oy=cy-(cy-oy)*k;s=ns;draw();}
-document.getElementById('zi').onclick=()=>zoom(1.4);
-document.getElementById('zo').onclick=()=>zoom(1/1.4);
-let dn=null;
-cv.addEventListener('pointerdown',e=>{dn={x:e.clientX,y:e.clientY,ox:ox,oy:oy,m:false};});
-cv.addEventListener('pointermove',e=>{if(!dn)return;const dx=e.clientX-dn.x,dy=e.clientY-dn.y;
- if(Math.abs(dx)+Math.abs(dy)>8)dn.m=true;if(dn.m){ox=dn.ox+dx;oy=dn.oy+dy;draw();}});
-cv.addEventListener('pointerup',e=>{if(dn&&!dn.m)tap(e.clientX,e.clientY);dn=null;});
-const menu=document.getElementById('menu');
+document.getElementById('zi').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1.5);
+document.getElementById('zo').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1/1.5);
+const ptr=new Map();let pd=0,mv=false,s0=[0,0];
+cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);mv=false;s0=[e.clientX,e.clientY];pd=0;});
+cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;const o=ptr.get(e.pointerId);
+ if(ptr.size===1){if(Math.abs(e.clientX-s0[0])+Math.abs(e.clientY-s0[1])>8)mv=true;if(mv){ox+=e.clientX-o[0];oy+=e.clientY-o[1];draw();}}
+ ptr.set(e.pointerId,[e.clientX,e.clientY]);
+ if(ptr.size===2){mv=true;const v=[...ptr.values()],d=Math.hypot(v[0][0]-v[1][0],v[0][1]-v[1][1]);if(pd)zoomAt((v[0][0]+v[1][0])/2,(v[0][1]+v[1][1])/2,d/pd);pd=d;}});
+cv.addEventListener('pointerup',e=>{const was=ptr.size===1&&!mv;ptr.delete(e.pointerId);pd=0;if(was)tap(e.clientX,e.clientY);});
+cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);pd=0;});
+function center(k){sc=5;const c=c0*sc;ox=innerWidth/2-(N[k][2]+180+.5)*c;oy=innerHeight/2-(TOP-N[k][3]+.5)*c;draw();}
 for(const k in N){const b=document.createElement('button');b.className='nb';b.style.background=N[k][1];
- b.textContent=N[k][0];b.onclick=()=>{me=k;menu.style.display='none';start();tick();};menu.appendChild(b);}
-window.addEventListener('resize',fit);fit();
+ const h=N[k][1],l=parseInt(h[1],16)*3+parseInt(h[2],16)*6+parseInt(h[3],16);if(l>90)b.style.color='#000';
+ b.textContent=N[k][0];b.onclick=()=>{me=k;menu.style.display='none';center(k);start();tick();};menu.appendChild(b);}
+window.addEventListener('resize',fit);fit();paint();draw();
 </script></body></html>
-
