@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Dunyo 1775</title>
+<style>
+body{margin:0;background:#0b2a45;color:#fff;font-family:sans-serif;overflow:hidden;touch-action:none}
+#top{position:fixed;top:0;left:0;right:0;padding:6px 10px;background:#000a;font-size:13px;z-index:2}
+#menu{position:fixed;inset:0;background:#0b1d2e;z-index:5;overflow:auto;text-align:center;padding:15px}
+.nb{display:block;margin:6px auto;padding:12px;width:80%;border:0;border-radius:8px;color:#fff;font-size:16px}
+#bot{position:fixed;bottom:0;left:0;right:0;display:flex;gap:6px;padding:6px;z-index:2}
+#bot button{flex:1;padding:12px;font-size:16px;border:0;border-radius:8px}
+canvas{display:block}
+</style></head><body>
+<div id="top"><span id="info">Davlatni tanlang</span></div>
+<canvas id="c"></canvas>
+<div id="bot"><button id="zi">+</button><button id="zo">-</button><button id="sp">1x</button></div>
+<div id="menu"><h2>Dunyo 1775</h2><p>Davlatingizni tanlang:</p></div>
+<script>
+const W=60,H=24;
+const RLE=["20.6-16.9R9.","4.15-1.6-6.2W24R2.","2.17-2.4-5.6W22R2.","2.12-2.3G9.1G1.4W24R2.","4.9-6G8.2G1.1N3K19R7.","4.11-4G9.2F3H7R3-8C9.","9.6-3U9.2S2F1-2T4.3R4-6C1.1J7.","10.5S3U9.1P2S7T4E3-6C1.2J7.","10.5S2U10.2Z7T4E3I6C1.2J8.","10.5S12.2Z4-2T2-3E5I4C11.","10.4S1.1S11.11-2.4I1.2-2C11.","10.5S12.10-3.3I2.3-1.1S10.","14.6S7.10-4.2I2.2-13.","16.3S1N7.9-8.3-1.2-10.","15.3S3P6.10-7.2-2.5-7.","15.3S4P5.9-10.2N2.4-6.","15.3S5P5.6-2P24.","15.4S4P6.6-1.2-10.5-7.","16.3S4P6.6-1.1-10.7-6.","16.3S3P9.4-12.7-6.","16.4S11.4-12.7-6.","16.4S11.2N14.7-3.2-1.","16.3S34.1-3.1-2.","16.2S42."];
+const N={G:["Buyuk Britaniya","#d33"],F:["Fransiya","#36c"],S:["Ispaniya","#e90"],P:["Portugaliya","#2a6"],R:["Rossiya","#5a3"],T:["Usmonlilar","#1bb"],H:["Gabsburglar","#ddd"],K:["Prussiya","#668"],N:["Niderlandiya","#f60"],W:["Shvetsiya","#4bd"],C:["Sin (Xitoy)","#fd0"],J:["Yaponiya","#f9c"],I:["Mugallar/Marata","#a5a"],E:["Eron","#8a5"],U:["13 koloniya","#59f"],Z:["Marokash","#a64"]};
+const own=[],tr=[];
+RLE.forEach(r=>{const row=[];
+ r.replace(/(\d+)([.\-A-Z])/g,(m,n,ch)=>{for(let i=0;i<+n;i++)row.push(ch);return m;});
+ while(row.length<W)row.push('.');row.length=W;
+ own.push(row);tr.push(row.map(c=>c==='.'?0:4+Math.floor(Math.random()*5)));});
+const cv=document.getElementById('c'),g=cv.getContext('2d'),info=document.getElementById('info');
+let me=null,s=1,ox=0,oy=0,c0=10,months=0,speed=1,timer=null,over=false;
+function fit(){cv.width=innerWidth;cv.height=innerHeight;c0=innerWidth/W;
+ if(!ox&&!oy)oy=(innerHeight-H*c0)/2;draw();}
+function draw(){
+ g.fillStyle="#0b2a45";g.fillRect(0,0,cv.width,cv.height);
+ const c=c0*s;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const o=own[y][x];if(o==='.')continue;
+  g.fillStyle=o==='-'?"#7a8a6a":N[o][1];
+  g.fillRect(ox+x*c,oy+y*c,c+0.5,c+0.5);
+  if(c>=10){g.strokeStyle="#0005";g.lineWidth=0.5;g.strokeRect(ox+x*c,oy+y*c,c,c);}
+  if(c>=18){g.fillStyle="#000b";g.font=(c*0.4)+"px sans-serif";g.fillText(tr[y][x],ox+x*c+2,oy+y*c+c*0.6);}
+ }}
+function attack(x,y,tx,ty){
+ const a=tr[y][x];if(a<3)return;
+ const send=Math.floor(a*0.7);tr[y][x]=a-send;
+ const d=tr[ty][tx],att=send*(0.9+Math.random()*0.4),def=d*(1+0.2*Math.random());
+ if(att>def){own[ty][tx]=own[y][x];tr[ty][tx]=Math.max(1,Math.floor(send-def*0.6));}
+ else tr[ty][tx]=Math.max(1,Math.floor(d-att*0.6));
+}
+function tap(px,py){
+ if(!me||over)return;
+ const c=c0*s,x=Math.floor((px-ox)/c),y=Math.floor((py-oy)/c);
+ if(x<0||y<0||x>=W||y>=H)return;
+ const o=own[y][x];if(o==='.'||o===me)return;
+ let best=null,bt=0;
+ for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
+  const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;
+  if(own[ny][nx]===me&&tr[ny][nx]>bt){bt=tr[ny][nx];best=[nx,ny];}}
+ if(best){attack(best[0],best[1],x,y);}else{info.textContent="Chegaradan uzoq!";}
+ draw();}
+function tick(){
+ if(over)return;
+ months++;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const o=own[y][x];if(o==='.'||o==='-')continue;
+  if(tr[y][x]<40&&Math.random()<0.3)tr[y][x]++;}
+ const cand={};
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+  const o=own[y][x];if(o==='.'||o==='-'||o===me||tr[y][x]<6)continue;
+  let tg=null,tm=999;
+  for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
+   const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H)continue;
+   const p=own[ny][nx];if(p==='.'||p===o)continue;
+   if(tr[ny][nx]<tm){tm=tr[ny][nx];tg=[nx,ny];}}
+  if(tg&&tr[y][x]*0.7>tm*1.1)(cand[o]=cand[o]||[]).push([x,y,tg[0],tg[1]]);
+ }
+ for(const o in cand){if(Math.random()<0.5){const a=cand[o],m=a[Math.floor(Math.random()*a.length)];attack(m[0],m[1],m[2],m[3]);}}
+ let mine=0,land=0,army=0;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const o=own[y][x];if(o==='.')continue;land++;if(o===me){mine++;army+=tr[y][x];}}
+ const yr=1775+Math.floor(months/12),mo=months%12+1;
+ info.textContent=N[me][0]+" | "+yr+"-yil, "+mo+"-oy | Hudud: "+mine+"/"+land+" | Qo'shin: "+army;
+ if(mine===0){over=true;alert("Yutqazdingiz!");}
+ else if(mine>land*0.6){over=true;alert("G'alaba! Dunyo sizniki!");}
+ draw();}
+function start(){clearInterval(timer);timer=setInterval(tick,1000/speed);}
+document.getElementById('sp').onclick=e=>{speed=speed===1?2:speed===2?4:1;e.target.textContent=speed+"x";if(me)start();};
+function zoom(k){const cx=innerWidth/2,cy=innerHeight/2;const ns=Math.min(6,Math.max(1,s*k));k=ns/s;ox=cx-(cx-ox)*k;oy=cy-(cy-oy)*k;s=ns;draw();}
+document.getElementById('zi').onclick=()=>zoom(1.4);
+document.getElementById('zo').onclick=()=>zoom(1/1.4);
+let dn=null;
+cv.addEventListener('pointerdown',e=>{dn={x:e.clientX,y:e.clientY,ox:ox,oy:oy,m:false};});
+cv.addEventListener('pointermove',e=>{if(!dn)return;const dx=e.clientX-dn.x,dy=e.clientY-dn.y;
+ if(Math.abs(dx)+Math.abs(dy)>8)dn.m=true;if(dn.m){ox=dn.ox+dx;oy=dn.oy+dy;draw();}});
+cv.addEventListener('pointerup',e=>{if(dn&&!dn.m)tap(e.clientX,e.clientY);dn=null;});
+const menu=document.getElementById('menu');
+for(const k in N){const b=document.createElement('button');b.className='nb';b.style.background=N[k][1];
+ b.textContent=N[k][0];b.onclick=()=>{me=k;menu.style.display='none';start();tick();};menu.appendChild(b);}
+window.addEventListener('resize',fit);fit();
+</script></body></html>
+
