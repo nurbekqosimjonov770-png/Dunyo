@@ -1,20 +1,23 @@
 const {W,H,g:GR,P}=MAP,S=6,TOP=80;
-const K='GFSPRTHKNWCJIEUZDL',NEU=18,SEA=255;
-const N={G:["Buyuk Britaniya","#d33",0,52],F:["Fransiya","#36c",2,47],S:["Ispaniya","#e90",-4,40],P:["Portugaliya","#2a6",-8,39],R:["Rossiya","#5a3",37,56],T:["Usmonlilar","#1bb",29,41],H:["Gabsburglar","#ddd",16,48],K:["Prussiya","#668",13,52],N:["Niderlandiya","#f60",5,52],W:["Shvetsiya","#4bd",18,60],C:["Sin (Xitoy)","#fd0",116,40],J:["Yaponiya","#f9c",138,36],I:["Mugallar/Marata","#a5a",78,23],E:["Eron","#8a5",52,33],U:["13 koloniya","#59f",-75,40],Z:["Marokash","#a64",-6,33],D:["Daniya","#c9a",10,56],L:["Polsha-Litva","#ca5",21,52]};
-const NM={G:['Qirol Jorj III',['Kornuollis','Xou','Klinton']],F:['Qirol Lyudovik XVI',['Roshambo','Lafayet','Syuffren']],S:['Qirol Karlos III',['Galvez','Seballos',"O'Reyli"]],P:['Qirol Xose I',['Lippe grafi','Pombal markizi','Lavradio markizi']],R:['Imperatritsa Yekaterina II',['Suvorov','Rumyantsev','Potyomkin']],T:['Sulton Abdulhamid I',['Gazi Hasan Posho','Jazzor Ahmad Posho','Koja Yusuf Posho']],H:['Imperator Iosif II',['Laudon','Lasi','Kobur']],K:['Qirol Fridrix II',['Prins Genrix','Brunsvik Ferdinandi','Myollendorf']],N:['Shtatxaldor Villem V',['Brunsvik Lyudvigi','Fan Bilandt','Kinsbergen']],W:['Qirol Gustav III',['Sprengtporten','Armfelt','Fon Esen']],C:['Imperator Tsyanlun',['Akui','Fukanan','Xailanca']],J:['Syogun Iyexaru',['Tanuma Okitsugu','Matsudaira Sadanobu','Mizuno Tadatomo']],I:['Shoh Olam II',['Mahadji Sindiya','Xaydar Ali','Nana Padnavis']],E:['Karim Xon Zand',['Zaki Xon','Sodiq Xon','Ali-Murod Xon']],U:['Jon Xenkok (Kongress)',['Jorj Vashington','Nataniel Grin','Genri Noks']],Z:['Sulton Muhammad III',['Mulay Yazid','Mulay Sulaymon']],D:['Qirol Kristian VII',['Gyuldberg','Rantsau']],L:['Qirol Stanislav II',['Kostyushko','Pulaski','Yozef Ponyatovskiy']]};
+const E=ERAS[ERAI],K=Object.keys(E.n).join(''),NEU=K.length,SEA=255;
+const N={},NM={};for(const k of K){const d=E.n[k];N[k]=[d[0],d[1],d[2],d[3]];NM[k]=[d[4],d[5]];}
+const UI=E.u.map(x=>x[0]),UN=E.u.map(x=>x[1]);
+const N0={G:["Buyuk Britaniya","#d33",0,52],F:["Fransiya","#36c",2,47],S:["Ispaniya","#e90",-4,40],P:["Portugaliya","#2a6",-8,39],R:["Rossiya","#5a3",37,56],T:["Usmonlilar","#1bb",29,41],H:["Gabsburglar","#ddd",16,48],K:["Prussiya","#668",13,52],N:["Niderlandiya","#f60",5,52],W:["Shvetsiya","#4bd",18,60],C:["Sin (Xitoy)","#fd0",116,40],J:["Yaponiya","#f9c",138,36],I:["Mugallar/Marata","#a5a",78,23],E:["Eron","#8a5",52,33],U:["13 koloniya","#59f",-75,40],Z:["Marokash","#a64",-6,33],D:["Daniya","#c9a",10,56],L:["Polsha-Litva","#ca5",21,52]};
+const NM0={G:['Qirol Jorj III',['Kornuollis','Xou','Klinton']],F:['Qirol Lyudovik XVI',['Roshambo','Lafayet','Syuffren']],S:['Qirol Karlos III',['Galvez','Seballos',"O'Reyli"]],P:['Qirol Xose I',['Lippe grafi','Pombal markizi','Lavradio markizi']],R:['Imperatritsa Yekaterina II',['Suvorov','Rumyantsev','Potyomkin']],T:['Sulton Abdulhamid I',['Gazi Hasan Posho','Jazzor Ahmad Posho','Koja Yusuf Posho']],H:['Imperator Iosif II',['Laudon','Lasi','Kobur']],K:['Qirol Fridrix II',['Prins Genrix','Brunsvik Ferdinandi','Myollendorf']],N:['Shtatxaldor Villem V',['Brunsvik Lyudvigi','Fan Bilandt','Kinsbergen']],W:['Qirol Gustav III',['Sprengtporten','Armfelt','Fon Esen']],C:['Imperator Tsyanlun',['Akui','Fukanan','Xailanca']],J:['Syogun Iyexaru',['Tanuma Okitsugu','Matsudaira Sadanobu','Mizuno Tadatomo']],I:['Shoh Olam II',['Mahadji Sindiya','Xaydar Ali','Nana Padnavis']],E:['Karim Xon Zand',['Zaki Xon','Sodiq Xon','Ali-Murod Xon']],U:['Jon Xenkok (Kongress)',['Jorj Vashington','Nataniel Grin','Genri Noks']],Z:['Sulton Muhammad III',['Mulay Yazid','Mulay Sulaymon']],D:['Qirol Kristian VII',['Gyuldberg','Rantsau']],L:['Qirol Stanislav II',['Kostyushko','Pulaski','Yozef Ponyatovskiy']]};
 const COL=[...K].map(k=>N[k][1]);COL.push('#7a8a6a');
-const UI=['⚔️','💂','🏇','💣'],UN=['Qilichbozlar','Miltiqchilar','Otliqlar',"To'plar"],RI=['','🪙','🥈','🛢'];
-const UC=[[20,0,0],[30,5,0],[40,8,0],[50,6,4]],UR=[30,24,20,16];
+const UI0=['⚔️','💂','🏇','💣'],UN0=['Qilichbozlar','Miltiqchilar','Otliqlar',"To'plar"],RI=['','🪙','🥈','🛢'];
+const UC=E.uc,UR=[30,24,20,16];
 const BD=[['🏰',"Qal'a",60,10,0],['⛺','Kazarma',40,0,0],['🏪','Bozor',50,0,0]];
 const LT=h=>parseInt(h[1],16)*3+parseInt(h[2],16)*6+parseInt(h[3],16)>90;
 const fmt=v=>v>=1000?(v/1000).toFixed(1)+'k':Math.floor(v);
 const co=new Uint8Array(W*H).fill(SEA);
-for(let i=0;i<W*H;i++){const p=GR[i];if(p>=0){const o=P[p][0];co[i]=o==='-'?NEU:K.indexOf(o);}}
-const cnt=new Array(19).fill(0);let land=0;
-function recount(){cnt.fill(0);for(let i=0;i<co.length;i++){const o=co[i];if(o!==SEA)cnt[o]++;}land=0;for(let i=0;i<19;i++)land+=cnt[i];}
+const ISOK={};for(const k in E.m)E.m[k].split(' ').forEach(s=>ISOK[s]=k);
+for(let i=0;i<W*H;i++){const p=GR[i];if(p>=0){const iso=P[p][3],lo=i%W-179.5,la=TOP-((i/W)|0)-.5,o=E.r(iso,lo,la)||ISOK[iso]||'-',j=K.indexOf(o);co[i]=j<0?NEU:j;}}
+const cnt=new Array(NEU+1).fill(0);let land=0;
+function recount(){cnt.fill(0);for(let i=0;i<co.length;i++){const o=co[i];if(o!==SEA)cnt[o]++;}land=0;for(let i=0;i<=NEU;i++)land+=cnt[i];}
 recount();
 const T=cnt.map((n,i)=>i<NEU?Math.round(40+12*Math.sqrt(n)):0);
-const F=[...K].map(k=>'CJIEZ'.includes(k)?[.5,.2,.3,0]:k==='T'?[.35,.3,.3,.05]:[.3,.45,.15,.1]);
+const F=[...K].map(k=>E.n[k][6].slice());
 const CAPC=[...K].map((k,i)=>{const tx=Math.floor(N[k][2]+180),ty=Math.floor(TOP-N[k][3]);let b=-1,bd=1e9;for(let c=0;c<co.length;c++)if(co[c]===i){const d=(c%W-tx)**2+((c/W|0)-ty)**2;if(d<bd){bd=d;b=c;}}return b;});
 const B=CAPC.filter(c=>c>=0).map(c=>[c,0]);
 const SITE=[];P.forEach(p=>{const lo=p[1]-179.5,la=TOP-p[2]-.5;let r=0;
@@ -61,7 +64,7 @@ function draw(){
  if(tgt){const x=ox+(tgt.c%W+.5)*c,y=oy+((tgt.c/W|0)+.5)*c;cx.beginPath();cx.arc(x,y,22,0,6.3);cx.fillStyle=tgt.ok?'#2a2':'#777';cx.fill();cx.lineWidth=3;cx.strokeStyle='#fff';cx.stroke();cx.font='24px sans-serif';cx.fillText(tgt.ok?'⚔️':'🚫',x,y+1);}}
 function fit(){const d=devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(d,0,0,d,0,0);
  c0=innerWidth/W;if(first){oy=(innerHeight-H*c0)/2;first=0;}draw();}
-function hud(){if(me<0)return;info.textContent=Date.now()<mt?msg:N[K[me]][0]+" | "+(1775+Math.floor(months/12))+"-yil "+(months%12+1)+"-oy | 🗺"+Math.round(cnt[me]/land*100)+"% | ⚔"+Math.floor(T[me])+" | 💰"+Math.floor(gold)+" 🥈"+Math.floor(silv)+" 🛢"+Math.floor(oil);}
+function hud(){if(me<0)return;info.textContent=Date.now()<mt?msg:N[K[me]][0]+" | "+(E.y+Math.floor(months/12))+"-yil "+(months%12+1)+"-oy | 🗺"+Math.round(cnt[me]/land*100)+"% | ⚔"+Math.floor(T[me])+" | 💰"+Math.floor(gold)+" 🥈"+Math.floor(silv)+" 🛢"+Math.floor(oil);}
 function note(t){msg=t;mt=Date.now()+2500;hud();}
 function pbtn(x,f){const b=document.createElement('button');b.textContent=x;b.style.cssText='margin:3px;padding:8px 10px;font-size:14px;border:0;border-radius:8px';b.onclick=f;pn.appendChild(b);}
 function showPanel(s){pn.innerHTML='';const t=document.createElement('div');t.textContent=s;pn.appendChild(t);pn.style.display='block';return t;}
@@ -127,7 +130,7 @@ function tap(px,py){if(me<0||over)return;const c=c0*sc;
  if(o===me){tgt=null;panelOwn(cell);draw();return;}
  tgt={c:cell,d:o,ok:near(cell)};panelEnemy();draw();}
 function ev1(t,i,n){T[i]+=n;msg=t;mt=Date.now()+6000;}
-function events(){if(months%6===0)save();
+function events(){if(months%6===0)save();for(const e of E.ev)if(months===e[0]){msg=e[1];mt=Date.now()+6000;for(const d of e[2]){const i=K.indexOf(d[0]);if(i>=0)T[i]=Math.max(5,T[i]+d[1]);}}return;
  if(months===12)ev1("1776: 13 koloniya mustaqillik e'lon qildi!",K.indexOf('U'),200);
  if(months===168)ev1("1789: Fransuz inqilobi! Fransiya kuchaydi",K.indexOf('F'),250);
  if(months===288)ev1("1799: Napoleon hokimiyatga keldi!",K.indexOf('F'),400);}
@@ -148,7 +151,7 @@ function intro(i){msg=NM[K[i]][0]+" | Sarkardalar: "+NM[K[i]][1].join(', ');mt=D
 function market(){showPanel('💱 Bozor | 💰'+Math.floor(gold)+' 🥈'+Math.floor(silv)+' 🛢'+Math.floor(oil));
  [['10🥈 → 14💰',()=>silv>=10&&(silv-=10,gold+=14)],['10💰 → 6🥈',()=>gold>=10&&(gold-=10,silv+=6)],['10🛢 → 13💰',()=>oil>=10&&(oil-=10,gold+=13)],['20💰 → 8🛢',()=>gold>=20&&(gold-=20,oil+=8)]].forEach(e=>pbtn(e[0],()=>{if(!e[1]())note('Resurs yetmaydi');market();hud();}));
  pbtn('✖',()=>{pn.style.display='none';});}
-function save(){try{let s='';for(let i=0;i<co.length;i++)s+=String.fromCharCode(48+(co[i]===SEA?60:co[i]));localStorage.setItem('d1775v4',JSON.stringify({me,co:s,T,F,gold,silv,oil,months,peace,trade,B,capLost}));}catch(e){}}
+function save(){try{let s='';for(let i=0;i<co.length;i++)s+=String.fromCharCode(48+(co[i]===SEA?60:co[i]));localStorage.setItem('d1775e'+ERAI,JSON.stringify({me,co:s,T,F,gold,silv,oil,months,peace,trade,B,capLost}));}catch(e){}}
 function load(sv){me=sv.me;for(let i=0;i<co.length;i++){const v=sv.co.charCodeAt(i)-48;co[i]=v===60?SEA:v;}sv.T.forEach((v,i)=>T[i]=v);sv.F.forEach((v,i)=>F[i]=v);gold=sv.gold;silv=sv.silv;oil=sv.oil;months=sv.months;peace=sv.peace;trade=sv.trade;B.length=0;sv.B.forEach(b=>B.push(b));capLost=sv.capLost||{};}
 document.getElementById('bz').onclick=()=>{if(me>=0)market();};
 document.getElementById('sp').onclick=e=>{speed=speed===1?2:speed===2?4:speed===4?0:1;e.target.textContent=speed?speed+'x':'⏸';if(me>=0)start();};
@@ -165,5 +168,6 @@ cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);pd=0;});
 for(let i=0;i<NEU;i++){const k=K[i],b=document.createElement('button');b.className='nb';b.style.background=N[k][1];
  if(LT(N[k][1]))b.style.color='#000';
  b.textContent=N[k][0]+' — '+NM[k][0];b.onclick=()=>{me=i;menu.style.display='none';center(i);start();tick();music();intro(i);};menu.appendChild(b);}
-try{const sv=JSON.parse(localStorage.getItem('d1775v4')||'null');if(sv&&sv.me>=0){const b=document.createElement('button');b.className='nb';b.style.background='#2a2';b.textContent='Davom ettirish: '+N[K[sv.me]][0];b.onclick=()=>{load(sv);menu.style.display='none';paint();center(me);start();tick();music();};menu.insertBefore(b,menu.children[2]);}}catch(e){}
+{const bk=document.createElement('button');bk.className='nb';bk.style.background='#555';bk.textContent="⬅ Davrni o'zgartirish";bk.onclick=()=>{try{localStorage.removeItem('eraSel');}catch(e){}location.reload();};menu.appendChild(bk);}
+try{const sv=JSON.parse(localStorage.getItem('d1775e'+ERAI)||'null');if(sv&&sv.me>=0){const b=document.createElement('button');b.className='nb';b.style.background='#2a2';b.textContent='Davom ettirish: '+N[K[sv.me]][0];b.onclick=()=>{load(sv);menu.style.display='none';paint();center(me);start();tick();music();};menu.insertBefore(b,menu.children[2]);}}catch(e){}
 window.addEventListener('resize',fit);fit();paint();draw();

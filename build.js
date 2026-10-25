@@ -24,7 +24,7 @@ for(let s=0;s<W*H;s++){if(key[s]===null||comp[s]>=0)continue;
  const id=comps.length,list=[s],o=key[s];comp[s]=id;
  for(let h=0;h<list.length;h++){const c=list[h],x=c%W,y=(c/W)|0;
   for(const d of [[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+d[0],ny=y+d[1];if(nx<0||ny<0||nx>=W||ny>=H)continue;const n=ny*W+nx;if(key[n]===o&&comp[n]<0){comp[n]=id;list.push(n);}}}
- comps.push({o:o[0],list});}
+ comps.push({o:o[0],iso:o.slice(1),list});}
 const grid=new Int16Array(W*H).fill(-1),P=[];
 const d2=(c,s)=>((c%W)-s[0])**2+(((c/W)|0)-s[1])**2;
 for(const cp of comps){const L=cp.list;if(L.length<2)continue;
@@ -34,7 +34,7 @@ for(const cp of comps){const L=cp.list;if(L.length<2)continue;
  const seeds=[[best%W,(best/W)|0]];
  const md=L.map(c=>d2(c,seeds[0]));
  while(seeds.length<k){let bi=0;for(let i=1;i<L.length;i++)if(md[i]>md[bi])bi=i;const c=L[bi],s=[c%W,(c/W)|0];seeds.push(s);for(let i=0;i<L.length;i++){const d=d2(L[i],s);if(d<md[i])md[i]=d;}}
- const base=P.length;seeds.forEach(s=>P.push([cp.o,s[0],s[1]]));
+ const base=P.length;seeds.forEach(s=>P.push([cp.o,s[0],s[1],cp.iso]));
  for(const c of L){let bj=0,bv=1e9;for(let j=0;j<seeds.length;j++){const d=d2(c,seeds[j]);if(d<bv){bv=d;bj=j;}}grid[c]=base+bj;}}
 const A=P.map(()=>new Set());
 for(let y=0;y<H;y++)for(let x=0;x<W;x++){const a=grid[y*W+x];if(a<0)continue;

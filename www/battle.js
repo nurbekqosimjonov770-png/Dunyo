@@ -59,7 +59,7 @@ function drawB(){const g=BX.g,bw=innerWidth,bh=innerHeight,mid=bh/2;
   else{g.strokeStyle=f[4]===3?'#fa4':'#fff';g.lineWidth=f[4]===3?2:1;g.beginPath();g.moveTo(f[0],f[1]);g.lineTo(f[2],f[3]);g.stroke();}}
  g.globalAlpha=1;}
 function setHd(){const o=BT.o,al=BT.al||[BT.na,BT.nd];
- BX.hd.innerHTML='🟩 <b>'+N[K[o.a]][0]+'</b> '+al[0]+'/'+BT.na+' 🎖'+NM[K[o.a]][1].join(', ')+'<br>🟥 <b>'+(o.d<NEU?N[K[o.d]][0]:'Mahalliy qabilalar')+'</b> '+al[1]+'/'+BT.nd+(o.d<NEU?' 🎖'+NM[K[o.d]][1].join(', '):'')+(o.fort?' 🏰':'')+'<br>'+(1775+Math.floor(months/12))+'-yil';}
+ BX.hd.innerHTML='🟩 <b>'+N[K[o.a]][0]+'</b> '+al[0]+'/'+BT.na+' 🎖'+NM[K[o.a]][1].join(', ')+'<br>🟥 <b>'+(o.d<NEU?N[K[o.d]][0]:'Mahalliy qabilalar')+'</b> '+al[1]+'/'+BT.nd+(o.d<NEU?' 🎖'+NM[K[o.d]][1].join(', '):'')+(o.fort?' 🏰':'')+'<br>'+(E.y+Math.floor(months/12))+'-yil';}
 function finishB(){const sa=BT.al[0]/BT.na,sd=BT.al[1]/BT.nd,r=battleDone(BT.o,sa,sd),adv=sa-sd;
  BX.sb.style.display='none';BX.fb.style.display='none';BX.cb.style.display='inline-block';
  BX.rs.innerHTML=(adv>.05?"🏆 G'alaba!":adv<-.05?"💀 Mag'lubiyat":"⚖️ Durang")+" | Yo'qotish: "+r.lossA+" | Dushman: "+r.kill+"<br>"+(r.got?"🗺 Egallandi: "+r.got+" hudud (chuqurlik "+r.D+")":"Hudud egallanmadi");setHd();}
