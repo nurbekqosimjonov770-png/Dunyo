@@ -12,7 +12,7 @@ canvas{display:block}
 </style></head><body>
 <div id="top"><span id="info">Davlatni tanlang</span></div>
 <canvas id="c"></canvas>
-<div id="bot"><button id="zi">+</button><button id="zo">-</button><button id="sp">1x</button></div>
+<div id="bot"><button id="zi">+</button><button id="zo">-</button><button id="mu">🎵</button><button id="sp">1x</button></div>
 <div id="menu"><h2>Dunyo 1775</h2><p>Davlatingizni tanlang:</p></div>
 <script src="map.js"></script>
 <script>
@@ -26,19 +26,23 @@ for(let y=0;y<H;y++)for(let x=0;x<W;x++){const a=GR[y*W+x];if(a<0)continue;
  if(y+1<H){const b=GR[(y+1)*W+x];if(b>=0&&b!==a)segs.push([x,y+1,1,a,b]);}}
 const cv=document.getElementById('c'),cx=cv.getContext('2d'),info=document.getElementById('info'),menu=document.getElementById('menu');
 const oc=document.createElement('canvas');oc.width=W*S;oc.height=H*S;const og=oc.getContext('2d');
-let me=null,sc=1,ox=0,oy=0,c0=1,first=1,months=0,speed=1,timer=null,over=false,dirty=false,msg='',mt=0,st=[0,0];
+let me=null,sc=1,ox=0,oy=0,c0=1,first=1,months=0,speed=1,timer=null,over=false,dirty=false,msg='',mt=0,st=[0,0],LB=[];
 function paint(){
  og.clearRect(0,0,oc.width,oc.height);
  for(let p=0;p<np;p++){og.fillStyle=own[p]==='-'?'#7a8a6a':N[own[p]][1];
   for(const c of cells[p])og.fillRect((c%W)*S,((c/W)|0)*S,S,S);}
  for(const s of segs){const w=own[s[3]]!==own[s[4]]?2:1;og.fillStyle=w>1?'#000c':'#0005';
-  if(s[2])og.fillRect(s[0]*S,s[1]*S-1,S,w);else og.fillRect(s[0]*S-1,s[1]*S,w,S);}}
+  if(s[2])og.fillRect(s[0]*S,s[1]*S-1,S,w);else og.fillRect(s[0]*S-1,s[1]*S,w,S);}labels();}
 function draw(){
  cx.fillStyle='#0b2a45';cx.fillRect(0,0,innerWidth,innerHeight);
  const c=c0*sc;cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
  cx.drawImage(oc,ox,oy,W*c,H*c);
  if(c>=3.2){cx.textAlign='center';cx.textBaseline='middle';cx.font='bold '+Math.min(16,c*2.6)+'px sans-serif';cx.lineWidth=3;cx.strokeStyle='#000b';cx.fillStyle='#fff';
-  for(let p=0;p<np;p++){const x=ox+(P[p][1]+.5)*c,y=oy+(P[p][2]+.5)*c;if(x<-20||y<-20||x>innerWidth+20||y>innerHeight+20)continue;cx.strokeText(tr[p],x,y);cx.fillText(tr[p],x,y);}}}
+  for(let p=0;p<np;p++){const x=ox+(P[p][1]+.5)*c,y=oy+(P[p][2]+.5)*c;if(x<-20||y<-20||x>innerWidth+20||y>innerHeight+20)continue;cx.strokeText(tr[p],x,y);cx.fillText(tr[p],x,y);}}
+ if(c<7){cx.textAlign='center';cx.textBaseline='middle';cx.lineWidth=3;cx.strokeStyle='#000c';cx.fillStyle='#fff';
+  for(const L of LB){const nm=N[L[0]][0].toUpperCase(),f=Math.min(26,Math.sqrt(L[3]*55)*c*.8/(.68*nm.length));if(f<9)continue;
+   const x=ox+(L[1]+.5)*c,y=oy+(L[2]+.5)*c;if(x<-50||y<-50||x>innerWidth+50||y>innerHeight+50)continue;
+   cx.font='bold '+f+'px sans-serif';cx.strokeText(nm,x,y);cx.fillText(nm,x,y);}}}
 function fit(){const d=devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(d,0,0,d,0,0);
  c0=innerWidth/W;if(first){oy=(innerHeight-H*c0)/2;first=0;}draw();}
 function hud(){if(!me)return;info.textContent=Date.now()<mt?msg:N[me][0]+" | "+(1775+Math.floor(months/12))+"-yil, "+(months%12+1)+"-oy | Viloyat: "+st[0]+"/"+np+" | Qo'shin: "+st[1];}
@@ -80,6 +84,27 @@ cv.addEventListener('pointercancel',e=>{ptr.delete(e.pointerId);pd=0;});
 function center(k){sc=5;const c=c0*sc;ox=innerWidth/2-(N[k][2]+180+.5)*c;oy=innerHeight/2-(TOP-N[k][3]+.5)*c;draw();}
 for(const k in N){const b=document.createElement('button');b.className='nb';b.style.background=N[k][1];
  const h=N[k][1],l=parseInt(h[1],16)*3+parseInt(h[2],16)*6+parseInt(h[3],16);if(l>90)b.style.color='#000';
- b.textContent=N[k][0];b.onclick=()=>{me=k;menu.style.display='none';center(k);start();tick();};menu.appendChild(b);}
+ b.textContent=N[k][0];b.onclick=()=>{me=k;menu.style.display='none';center(k);start();tick();music();};menu.appendChild(b);}
+function labels(){const seen=new Uint8Array(np);LB=[];
+ for(let p=0;p<np;p++){if(seen[p]||own[p]==='-')continue;const o=own[p],q=[p];seen[p]=1;
+  for(let i=0;i<q.length;i++)for(const n of A[q[i]])if(!seen[n]&&own[n]===o){seen[n]=1;q.push(n);}
+  if(q.length<3)continue;let mx=0,my=0;for(const k of q){mx+=P[k][1];my+=P[k][2];}mx/=q.length;my/=q.length;
+  let b=q[0],bd=1e9;for(const k of q){const d=(P[k][1]-mx)**2+(P[k][2]-my)**2;if(d<bd){bd=d;b=k;}}
+  LB.push([o,P[b][1],P[b][2],q.length]);}}
+let ac=null,mg=null,mOn=true,nT=0,sP=0;
+function tone(f,t,d,ty,v){const o=ac.createOscillator(),g=ac.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(mg);o.start(t);o.stop(t+d+.05);}
+function kick(t){const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(120,t);o.frequency.exponentialRampToValueAtTime(40,t+.15);g.gain.setValueAtTime(.6,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g);g.connect(mg);o.start(t);o.stop(t+.3);}
+function snare(t){const n=(ac.sampleRate*.15)|0,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;const u=ac.createBufferSource(),g=ac.createGain();u.buffer=b;g.gain.setValueAtTime(.25,t);g.gain.exponentialRampToValueAtTime(.001,t+.15);u.connect(g);g.connect(mg);u.start(t);}
+const CH=[[62,65,69],[58,62,65],[60,64,67],[57,61,64]],BS=[38,34,36,33];
+const ML=[[74,0,77,0,81,0,79,77],[77,0,74,0,70,0,72,74],[76,0,79,0,84,0,83,81],[81,0,79,0,77,0,76,73]];
+const mf=m=>440*Math.pow(2,(m-69)/12);
+function sched(){while(nT<ac.currentTime+.3){const bar=(sP>>3)&3,s=sP&7,sd=.3125;
+ if(s===0){CH[bar].forEach(m=>tone(mf(m),nT,sd*7,'sawtooth',.025));}
+ if(s===0||s===4)tone(mf(BS[bar]),nT,sd*3.5,'triangle',.2);
+ const m=ML[bar][s];if(m)tone(mf(m),nT,sd*1.8,'square',.04);
+ if(s===0||s===4)kick(nT);if(s===2||s===6)snare(nT);
+ nT+=sd;sP++;}}
+function music(){if(!mOn)return;if(!ac){ac=new (window.AudioContext||window.webkitAudioContext)();mg=ac.createGain();mg.gain.value=.5;const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=2200;mg.connect(lp);lp.connect(ac.destination);nT=ac.currentTime+.1;setInterval(sched,100);}if(ac.state==='suspended')ac.resume();}
+document.getElementById('mu').onclick=e=>{mOn=!mOn;e.target.textContent=mOn?'🎵':'🔇';if(mOn)music();else if(ac)ac.suspend();};
 window.addEventListener('resize',fit);fit();paint();draw();
 </script></body></html>
