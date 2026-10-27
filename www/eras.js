@@ -104,10 +104,12 @@ D:["Daniya","#c9a",10,56,"Qirol Kristian VII",["Gyuldberg","Rantsau"],[.3,.45,.1
 L:["Polsha-Litva","#ca5",21,52,"Qirol Stanislav II",["Kostyushko","Pulaski","Yozef Ponyatovskiy"],[.3,.45,.15,.1]]},
 ev:[[12,"1776: 13 koloniya mustaqillik e'lon qildi!",[['U',200]]],[168,"1789: Fransuz inqilobi! Fransiya kuchaydi",[['F',250]]],[288,"1799: Napoleon hokimiyatga keldi!",[['F',400]]]]}
 ];
-let ERAI=-1;try{const v=localStorage.getItem('eraSel');if(v!==null)ERAI=+v;}catch(e){}
+for(const L of [typeof ERAS2!=='undefined'?ERAS2:[],typeof ERAS3!=='undefined'?ERAS3:[]])for(const e of L){if(!e.u)e.u=[['⚔️','Qilichbozlar'],['🏹','Kamonchilar'],['🏇','Otliqlar'],['💣',"To'plar"]];if(!e.uc)e.uc=[[20,0,0],[30,5,0],[40,8,0],[50,6,4]];if(!e.ev)e.ev=[];ERAS.push(e);}
+ERAS.sort((a,b)=>a.y-b.y);
+let ERAI=-1;try{const v=localStorage.getItem('eraSel');if(v!==null)ERAI=ERAS.findIndex(e=>e.y===+v);}catch(e){}
 if(!(ERAI>=0&&ERAI<ERAS.length))ERAI=-1;
 document.getElementById('hm').onclick=()=>{try{localStorage.removeItem('eraSel');}catch(e){}location.reload();};
 const mh=document.querySelector('#menu h2'),mp=document.querySelector('#menu p'),mn=document.getElementById('menu');
 if(ERAI<0){mh.textContent='Dunyo tarixi';mp.textContent='Davrni tanlang:';
- ERAS.forEach((e,i)=>{const b=document.createElement('button');b.className='nb';b.style.background='#2a4a6a';b.textContent=e.t;b.onclick=()=>{try{localStorage.setItem('eraSel',i);}catch(x){}location.reload();};mn.appendChild(b);});}
-else{mh.textContent=ERAS[ERAI].t;document.write('<script src="game.js"><\/script><script src="battle.js"><\/script>');}
+ ERAS.forEach((e,i)=>{const b=document.createElement('button');b.className='nb';b.style.background='#2a4a6a';b.textContent=e.t;b.onclick=()=>{try{localStorage.setItem('eraSel',e.y);}catch(x){}location.reload();};mn.appendChild(b);});}
+else{mh.textContent=ERAS[ERAI].t;document.write('<script src="game.js"><\/script><script src="game2.js"></script><script src="battle.js"></script><script src="battle2.js"><\/script>');}

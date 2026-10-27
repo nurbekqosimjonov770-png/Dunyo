@@ -68,6 +68,7 @@ function draw(){
  if(c>=2.2)for(const b of B){const x=ox+(b[0]%W+.5)*c+10,y=oy+((b[0]/W|0)+.5)*c+8;if(x<-30||y<-30||x>innerWidth+30||y>innerHeight+30)continue;cx.font=Math.min(22,Math.max(10,c*2.4))+'px sans-serif';cx.fillText(BD[b[1]][0],x,y);}
  if(c>=3)for(const s of SITE){const x=ox+(s[0]%W+.5)*c,y=oy+((s[0]/W|0)+.5)*c;if(x<-30||y<-30||x>innerWidth+30||y>innerHeight+30)continue;cx.font=Math.min(18,c*2)+'px sans-serif';cx.fillText(RI[s[1]],x,y);}
  if(ships>0&&c>=1.2){const pl=B.filter(b=>b[1]===3&&co[b[0]]===me);if(pl.length)for(let s=0;s<Math.min(ships,12);s++){const b=pl[s%pl.length],pc=portSea(b[0]);if(pc<0)continue;const sx=ox+((pc%W)+.5)*c+(Math.floor(s/pl.length)%3-1)*c*.8,sy=oy+(((pc/W)|0)+.5)*c+Math.sin(Date.now()/600+s)*2;cx.font=Math.min(24,Math.max(12,c*3))+'px sans-serif';cx.fillStyle='#fff';cx.fillText('⛵',sx,sy);}}
+ if(typeof drawFleets==='function')drawFleets(c);
  if(tgt){const x=ox+(tgt.c%W+.5)*c,y=oy+((tgt.c/W|0)+.5)*c;cx.beginPath();cx.arc(x,y,22,0,6.3);cx.fillStyle=tgt.ok?'#2a2':'#777';cx.fill();cx.lineWidth=3;cx.strokeStyle='#fff';cx.stroke();cx.font='24px sans-serif';cx.fillText(tgt.ok?'⚔️':'🚫',x,y+1);}}
 function fit(){const d=devicePixelRatio||1;cv.width=innerWidth*d;cv.height=innerHeight*d;cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';cx.setTransform(d,0,0,d,0,0);
  c0=innerWidth/W;if(first){oy=(innerHeight-H*c0)/2;first=0;}draw();}
@@ -177,7 +178,7 @@ for(let i=0;i<NEU;i++){const k=K[i],b=document.createElement('button');b.classNa
  if(LT(N[k][1]))b.style.color='#000';
  b.textContent=emb(i)+' '+N[k][0]+' — '+NM[k][0];b.onclick=()=>{me=i;menu.style.display='none';center(i);start();tick();music();intro(i);};menu.appendChild(b);}
 {const bk=document.createElement('button');bk.className='nb';bk.style.background='#555';bk.textContent="⬅ Davrni o'zgartirish";bk.onclick=()=>{try{localStorage.removeItem('eraSel');}catch(e){}location.reload();};menu.appendChild(bk);}
-try{const sv=JSON.parse(localStorage.getItem('d1775e'+ERAI)||'null');if(sv&&sv.me>=0){const b=document.createElement('button');b.className='nb';b.style.background='#2a2';b.textContent='Davom ettirish: '+N[K[sv.me]][0];b.onclick=()=>{load(sv);menu.style.display='none';paint();center(me);start();tick();music();};menu.insertBefore(b,menu.children[2]);}}catch(e){}
+try{const sv=JSON.parse(localStorage.getItem('d1775y'+E.y)||'null');if(sv&&sv.me>=0){const b=document.createElement('button');b.className='nb';b.style.background='#2a2';b.textContent='Davom ettirish: '+N[K[sv.me]][0];b.onclick=()=>{load(sv);menu.style.display='none';paint();center(me);start();tick();music();};menu.insertBefore(b,menu.children[2]);}}catch(e){}
 function coastal(c){const x=c%W,y=(c/W)|0;return x>0&&co[c-1]===SEA||x<W-1&&co[c+1]===SEA||y>0&&co[c-W]===SEA||y<H-1&&co[c+W]===SEA;}
 function ports(){let n=0;for(const b of B)if(b[1]===3&&co[b[0]]===me)n++;return n;}
 function buyShip(c){if(gold<60||silv<10){note('Resurs yetmaydi');return;}gold-=60;silv-=10;ships++;sfx('coin');panelOwn(c);hud();draw();}
