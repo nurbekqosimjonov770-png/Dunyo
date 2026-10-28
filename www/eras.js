@@ -112,4 +112,4 @@ document.getElementById('hm').onclick=()=>{try{localStorage.removeItem('eraSel')
 const mh=document.querySelector('#menu h2'),mp=document.querySelector('#menu p'),mn=document.getElementById('menu');
 if(ERAI<0){mh.textContent='Dunyo tarixi';mp.textContent='Davrni tanlang:';
  ERAS.forEach((e,i)=>{const b=document.createElement('button');b.className='nb';b.style.background='#2a4a6a';b.textContent=e.t;b.onclick=()=>{try{localStorage.setItem('eraSel',e.y);}catch(x){}location.reload();};mn.appendChild(b);});}
-else{mh.textContent=ERAS[ERAI].t;document.write('<script src="game.js"><\/script><script src="game2.js"></script><script src="battle.js"></script><script src="battle2.js"></script><script src="battle3.js"><\/script>');}
+else{mh.textContent=ERAS[ERAI].t;document.write('<script src="game.js"><\/script><script src="game2.js"></script><script src="battle.js"></script><script src="battle2.js"></script><script src="battle3.js"></script><script src="march.js"><\/script>');}
