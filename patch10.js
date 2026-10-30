@@ -1,0 +1,24 @@
+const fs=require('fs');
+const FL={a:'www/battle.js',b:'www/battle2.js',c:'www/battle3.js',e:'www/eras.js'},S={};for(const k in FL)S[k]=fs.readFileSync(FL[k],'utf8');
+function R(k,a,b){if(S[k].split(a).length!==2){console.log('TOPILMADI:',FL[k],a.slice(0,60));process.exit(1);}S[k]=S[k].split(a).join(b);}
+R('a',`const bw=innerWidth,bh=innerHeight,mid=bh/2,dir=side?-1:1,front=mid+dir*80,cxm=bw/2;`,`const bw=BW,bh=BH,mid=bh/2,dir=side?-1:1,front=mid+dir*140,cxm=bw/2;`);
+R('a',`u.x=Math.max(8,Math.min(innerWidth-8,u.x));u.y=Math.max(130,Math.min(innerHeight-70,u.y));`,`u.x=Math.max(8,Math.min(BW-8,u.x));u.y=Math.max(20,Math.min(BH-20,u.y));`);
+R('b',`Math.min(innerHeight-75,u.y+sp*.8*dt)`,`Math.min(BH-30,u.y+sp*.8*dt)`);
+R('b',`BT.fl.push([sx,innerHeight/2,e.x,e.y,3,.25]);`,`BT.fl.push([sx,BH/2,e.x,e.y,3,.25]);`);
+R('b',`BT.t>45||`,`BT.t>75||`);
+R('b',`function drawB(){const g=BX.g,bw=innerWidth,bh=innerHeight,mid=bh/2,nv=BT.o.naval;`,`function drawB(){const g=BX.g,bw=BW,bh=BH,mid=bh/2,nv=BT.o.naval;`);
+R('b',`g.strokeStyle=nv?'#4a9bc2':'#7fb0c4';g.lineWidth=16;g.stroke();`,`g.strokeStyle=nv?'#4a9bc2':'#7fb0c4';g.lineWidth=16;g.stroke();if(typeof drawDeco==='function')drawDeco(g);`);
+R('b',`function toggleHero(){const bw=innerWidth,mid=innerHeight/2;`,`function toggleHero(){const bw=BW,mid=BH/2;`);
+R('b',`const hu=mk(0,5,bw/2,mid+75,1);`,`const hu=mk(0,5,bw/2,mid+135,1);`);
+R('b',`const bw=innerWidth,bh=innerHeight,d=devicePixelRatio||1;`,`const bw=BW,bh=BH,d=devicePixelRatio||1;`);
+R('b',`BX.cv.width=bw*d;BX.cv.height=bh*d;BX.cv.style.width=bw+'px';BX.cv.style.height=bh+'px';BX.g.setTransform(d,0,0,d,0,0);`,`BX.cv.width=innerWidth*d;BX.cv.height=innerHeight*d;BX.cv.style.width=innerWidth+'px';BX.cv.style.height=innerHeight+'px';BX.g.setTransform(d,0,0,d,0,0);`);
+R('c',`const W=innerWidth-40,`,`const W=BW-40,`);
+R('c',`const bw=innerWidth,bh=innerHeight,mid=bh/2;let x0=1e9`,`const bw=BW,bh=BH,mid=bh/2;let x0=1e9`);
+R('c',`const ymin=side?130:mid+25,ymax=side?mid-25:bh-125;`,`const ymin=side?40:mid+25,ymax=side?mid-25:bh-40;`);
+R('c',`sp=BT.sp||13,bw=innerWidth;`,`sp=BT.sp||13,bw=BW;`);
+R('c',`const bw=innerWidth,sp=BT.sp||13,all=`,`const bw=BW,sp=BT.sp||13,all=`);
+R('c',`{x:innerWidth/2,y:innerHeight/2-80}`,`{x:BW/2,y:BH/2-140}`);
+R('c',`const g=BX.g,bw=innerWidth,bh=innerHeight,mid=bh/2;`,`const g=BX.g,bw=BW,bh=BH,mid=bh/2;`);
+R('c',`if(!BX._pd){BX._pd=1;BX.cv.addEventListener('pointerdown',e=>{if(BT&&BT.prep&&!BT.done)moveSel(e.clientX,e.clientY);});BX.cv.addEventListener('pointermove',e=>{if(e.buttons&&BT&&BT.prep&&!BT.done)moveSel(e.clientX,e.clientY);});}`,``);
+R('e',`src="battle3.js">`,`src="battle3.js"></script><script src="battle4.js">`);
+for(const k in FL)fs.writeFileSync(FL[k],S[k]);console.log('TAYYOR');

@@ -14,14 +14,14 @@ function heroAct(k){const H0=BT.hero;if(!H0||H0.dead||H0.acd>0)return;const u=H0
   const fc=mel?(k==='bow'?1:0):(BT.hm==='naval'?3:(k==='spear'?3:1));
   BT.fl.push([u.x,u.y,best.x,best.y,fc,.18]);sfx(w.s||(k==='bow'?'arrow':'clash'));}
  else BT.fl.push([u.x,u.y,u.x+H0.fx*reach*.5,u.y+H0.fy*reach*.5,0,.12]);}
-function toggleHero(){const bw=innerWidth,mid=innerHeight/2;
+function toggleHero(){const bw=BW,mid=BH/2;
  if(BT.hero){BT.U=BT.U.filter(u=>u!==BT.hero.u);BT.hero=null;BX.hb.textContent="🗡 Men ham jang qilaman: YO'Q";}
- else{const hu=mk(0,5,bw/2,mid+75,1);hu.hero=true;BT.U.push(hu);BT.hero={u:hu,mount:false,block:false,stam:100,arrows:BT.hm==='modern'?80:BT.hm==='naval'?40:30,kills:0,acd:0,jx:0,jy:0,fx:0,fy:-1,hold:null,dead:false};BX.hb.textContent="🗡 Men ham jang qilaman: HA ✅";toast("Siz qo'shin safida jang qilasiz. Chapda yuring, o'ngdagi tugmalar bilan uring.");}}
+ else{const hu=mk(0,5,bw/2,mid+135,1);hu.hero=true;BT.U.push(hu);BT.hero={u:hu,mount:false,block:false,stam:100,arrows:BT.hm==='modern'?80:BT.hm==='naval'?40:30,kills:0,acd:0,jx:0,jy:0,fx:0,fy:-1,hold:null,dead:false};BX.hb.textContent="🗡 Men ham jang qilaman: HA ✅";toast("Siz qo'shin safida jang qilasiz. Chapda yuring, o'ngdagi tugmalar bilan uring.");}}
 function stepB(dt){if(BT.prep||BT.done)return;const U=BT.U;BT.t+=dt;heroStep(dt);
  for(const u of U){if(!u.alive||u.hero)continue;u.cd-=dt;const A0=u.t<4?TSd[u.s]:null,sp=ST(u,'sp');
   if(BT.rout[u.s]){u.y+=(u.s?-1:1)*sp*.8*dt;continue;}
   let cm=u.s===0?BT.cmd:0;
-  if(cm===2){u.y=Math.min(innerHeight-75,u.y+sp*.8*dt);continue;}
+  if(cm===2){u.y=Math.min(BH-30,u.y+sp*.8*dt);continue;}
   const hl=BT.hero&&!BT.hero.dead?BT.hero.u:null;if(cm===3&&!hl)cm=0;
   if(!u.tg||!u.tg.alive||(u.rt-=dt)<=0){u.tg=nearEnemy(u,U);u.rt=.6+Math.random()*.6;}
   const e=u.tg;if(!e)continue;
@@ -33,23 +33,23 @@ function stepB(dt){if(BT.prep||BT.done)return;const U=BT.U;BT.t+=dt;heroStep(dt)
    u.cd=ST(u,'rl')*(.8+Math.random()*.4);const tk=A0&&A0.sh[u.t]===6;BT.fl.push([u.x,u.y,e.x,e.y,tk?3:u.t,.18]);
    sfx(u.t===3||tk?'boom':u.t===1?(A0.t<3?'arrow':'shot'):'clash');
    hit(e,ST(u,'dm')*m*(.8+Math.random()*.4),'u');}}
- if(BT.o.sea&&BT.sx.length){BT.shT-=dt;if(BT.shT<=0){BT.shT=2.2/BT.sx.length+.6;const cs=U.filter(e=>e.alive&&e.s===1&&e.t<4);if(cs.length){const e=cs[(Math.random()*cs.length)|0],sx=BT.sx[(Math.random()*BT.sx.length)|0];hit(e,2.4,'ship');BT.fl.push([sx,innerHeight/2,e.x,e.y,3,.25]);sfx('boom');}}}
+ if(BT.o.sea&&BT.sx.length){BT.shT-=dt;if(BT.shT<=0){BT.shT=2.2/BT.sx.length+.6;const cs=U.filter(e=>e.alive&&e.s===1&&e.t<4);if(cs.length){const e=cs[(Math.random()*cs.length)|0],sx=BT.sx[(Math.random()*BT.sx.length)|0];hit(e,2.4,'ship');BT.fl.push([sx,BH/2,e.x,e.y,3,.25]);sfx('boom');}}}
  if(BT.air>0){BT.aT-=dt;if(BT.aT<=0){BT.aT=3.2/Math.sqrt(BT.air);const cs=U.filter(e=>e.alive&&e.s===1&&e.t<4);if(cs.length){const e=cs[(Math.random()*cs.length)|0];BT.pl.push({y:e.y,t:0});for(const v of U)if(v.alive&&v.s===1&&Math.hypot(v.x-e.x,v.y-e.y)<28)hit(v,3.5,'air');BT.fl.push([e.x,e.y,e.x,e.y,0,.3]);sfx('boom');}}}
  BT.pl=BT.pl.filter(p=>(p.t+=dt)<1.4);
  BT.fl=BT.fl.filter(f=>(f[5]-=dt)>0);
  let a0=0,a1=0;for(const u of U)if(u.alive&&u.t<4){if(u.s)a1++;else a0++;}BT.al=[a0,a1];
  if(a0<BT.na*.2)BT.rout[0]=true;if(a1<BT.nd*.2)BT.rout[1]=true;
  if(BT.rout[0])BT.rt[0]+=dt;if(BT.rout[1])BT.rt[1]+=dt;
- if(!BT.done&&(a0===0||a1===0||BT.t>45||BT.rt[0]>3||BT.rt[1]>3)){BT.done=true;finishB();}}
+ if(!BT.done&&(a0===0||a1===0||BT.t>75||BT.rt[0]>3||BT.rt[1]>3)){BT.done=true;finishB();}}
 function shipShape(g,u,col){const sz=[[9,4],[12,5],[11,4],[17,6]][u.t]||[9,4];
  g.fillStyle=col;g.strokeStyle='#000';g.lineWidth=1.2;g.beginPath();g.ellipse(u.x,u.y,sz[1],sz[0],0,0,6.3);g.fill();g.stroke();
  g.fillStyle='#fff';g.beginPath();g.moveTo(u.x,u.y-sz[0]*.7);g.lineTo(u.x+sz[1]*1.2,u.y+sz[0]*.2);g.lineTo(u.x-sz[1]*1.2,u.y+sz[0]*.2);g.closePath();g.fill();}
 function tankShape(g,u,col){g.fillStyle=col;g.strokeStyle='#000';g.lineWidth=1.2;g.fillRect(u.x-7,u.y-5,14,10);g.strokeRect(u.x-7,u.y-5,14,10);
  g.beginPath();g.arc(u.x,u.y,3.5,0,6.3);g.fillStyle='#0004';g.fill();g.stroke();g.beginPath();g.moveTo(u.x,u.y);g.lineTo(u.x,u.y+(u.s?11:-11));g.lineWidth=2;g.stroke();}
-function drawB(){const g=BX.g,bw=innerWidth,bh=innerHeight,mid=bh/2,nv=BT.o.naval;
+function drawB(){const g=BX.g,bw=BW,bh=BH,mid=bh/2,nv=BT.o.naval;
  g.fillStyle=nv?'#2c6b8f':'#c9b77a';g.fillRect(0,0,bw,bh);
  g.lineCap='round';g.strokeStyle=nv?'#3f86ab':'#5b8fa8';g.lineWidth=26;g.beginPath();g.moveTo(0,mid);for(let x=0;x<=bw;x+=20)g.lineTo(x,mid+Math.sin(x/37+BT.t*.3)*12);g.stroke();
- g.strokeStyle=nv?'#4a9bc2':'#7fb0c4';g.lineWidth=16;g.stroke();
+ g.strokeStyle=nv?'#4a9bc2':'#7fb0c4';g.lineWidth=16;g.stroke();if(typeof drawDeco==='function')drawDeco(g);
  g.textAlign='center';g.textBaseline='middle';
  if(BT.o.sea)for(const x of BT.sx){g.font='26px sans-serif';g.fillStyle='#fff';g.fillText('⛵',x,mid+Math.sin(BT.t*2+x)*3);}
  g.fillStyle='#0003';for(const d of BT.dead)g.fillRect(d[0]-2,d[1]-2,4,4);
@@ -89,8 +89,8 @@ function startFight(){BT.prep=false;BX.pb.style.display='none';BX.hb.style.displ
  if(BT.hero){BX.ctl.style.display='block';BX.bars.style.display='block';BX.sb.style.display='none';BX.fb.style.display='none';
   const L={melee:['🗡','🔱','🏹','🛡','🐎'],modern:['🔫','💣','🎯','🛡','🚙'],naval:['💥','🔥','🎯','🛡','⚡']}[BT.hm],ch=BX.ctl.children;for(let i=0;i<5;i++)ch[i+1].textContent=L[i];}
  else{BX.sb.style.display='inline-block';BX.fb.style.display='inline-block';}}
-function startBattle(o){if(!BX)buildBX();const bw=innerWidth,bh=innerHeight,d=devicePixelRatio||1;
- BX.cv.width=bw*d;BX.cv.height=bh*d;BX.cv.style.width=bw+'px';BX.cv.style.height=bh+'px';BX.g.setTransform(d,0,0,d,0,0);
+function startBattle(o){if(!BX)buildBX();const bw=BW,bh=BH,d=devicePixelRatio||1;
+ BX.cv.width=innerWidth*d;BX.cv.height=innerHeight*d;BX.cv.style.width=innerWidth+'px';BX.cv.style.height=innerHeight+'px';BX.g.setTransform(d,0,0,d,0,0);
  BX.box.style.display='block';inB=true;if(ac)mg.gain.value=mOn?.25:0;
  BX.rs.innerHTML='';BX.pb.style.display='inline-block';BX.hb.style.display='inline-block';BX.sb.style.display='none';BX.fb.style.display='none';BX.cb.style.display='none';BX.cm.style.display='none';BX.ctl.style.display='none';BX.bars.style.display='none';BX.sb.textContent='⏩ 1x';BX.hb.textContent="🗡 Men ham jang qilaman: YO'Q";
  BX.cb2.forEach((x,j)=>x.style.background=j===0?'#fc0':'#000a');

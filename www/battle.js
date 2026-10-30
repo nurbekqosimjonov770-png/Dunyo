@@ -29,7 +29,7 @@ const HP=[3,2.5,4,3,9,60],SP=[22,16,60,7,10,0],RG=[10,95,11,170,130,0],DM=[1,1.5
 let BT=null,BX=null;
 function split(n,f){const r=f.map(x=>x*n),a=r.map(Math.floor);let left=n-a.reduce((s,x)=>s+x,0);const idx=r.map((x,i)=>[x-a[i],i]).sort((p,q)=>q[0]-p[0]);for(let i=0;left>0;i=(i+1)%4,left--)a[idx[i][1]]++;return a;}
 function mk(s,t,x,y,m){return{s,t,x,y,hp:HP[t]*m,alive:true,cd:Math.random(),tg:null,rt:0};}
-function army(side,n,f,ns,hpm){const bw=innerWidth,bh=innerHeight,mid=bh/2,dir=side?-1:1,front=mid+dir*80,cxm=bw/2;
+function army(side,n,f,ns,hpm){const bw=BW,bh=BH,mid=bh/2,dir=side?-1:1,front=mid+dir*140,cxm=bw/2;
  const cn=split(n,f),L=[],inf=[];
  [0,1,3].forEach(t=>{for(let i=0;i<cn[t];i++)inf.push(t);});
  const cols=Math.max(4,Math.min(14,Math.ceil(Math.sqrt(inf.length*1.6)))),sp=Math.min(15,(bw-40)/(cols+6));
@@ -53,7 +53,7 @@ function heroAct(k){const H0=BT.hero;if(!H0||H0.dead||H0.acd>0)return;const u=H0
 function heroStep(dt){const H0=BT.hero;if(!H0||H0.dead)return;const u=H0.u;H0.acd=Math.max(0,H0.acd-dt);
  const m=Math.hypot(H0.jx,H0.jy),sp=(H0.mount?(H0.stam>0?95:50):42)*(H0.block?.5:1);
  if(m>.08){const k=Math.min(1,m);u.x+=H0.jx/m*sp*k*dt;u.y+=H0.jy/m*sp*k*dt;H0.fx=H0.jx/m;H0.fy=H0.jy/m;}
- u.x=Math.max(8,Math.min(innerWidth-8,u.x));u.y=Math.max(130,Math.min(innerHeight-70,u.y));
+ u.x=Math.max(8,Math.min(BW-8,u.x));u.y=Math.max(20,Math.min(BH-20,u.y));
  if(H0.block){H0.stam-=8*dt;if(H0.stam<=0){H0.stam=0;H0.block=false;}}
  else if(H0.mount&&m>.5)H0.stam=Math.max(0,H0.stam-3*dt);
  else H0.stam=Math.min(100,H0.stam+12*dt);

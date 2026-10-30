@@ -9,7 +9,7 @@ market=function(){
  deal('🥈 '+n+' → '+sS(n)+'💰',()=>silv>=n,()=>{silv-=n;gold+=sS(n);});
  deal('🛢 '+n+' → '+sO(n)+'💰',()=>oil>=n,()=>{oil-=n;gold+=sO(n);});
  pbtn('✖',()=>{pn.style.display='none';});};
-const PASS=3,MS=1<<PASS,w3=W*MS,h3=H*MS;
+const PASS=2,MS=1<<PASS,w3=W*MS,h3=H*MS;
 oc.width=w3;oc.height=h3;
 const BUF=[];for(let k=1;k<=PASS;k++)BUF.push(new Uint8Array(W*H*(1<<(2*k))));
 const BDR=new Uint8Array(w3*h3);
