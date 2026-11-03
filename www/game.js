@@ -60,7 +60,7 @@ function draw(){
   for(const L of LB){const nm=N[K[L[0]]][0].toUpperCase(),f=Math.min(26,Math.sqrt(L[3])*c*1.1/(.68*nm.length));if(f<9)continue;
    const x=ox+(L[1]+.5)*c,y=oy+(L[2]+.5)*c;if(x<-60||y<-30||x>innerWidth+60||y>innerHeight+30)continue;
    cx.font='bold '+f+'px sans-serif';cx.strokeText(nm,x,y);cx.fillText(nm,x,y);}}
- for(let i=0;i<NEU;i++){const cp=CAPC[i];if(cp<0||co[cp]!==i)continue;const x=ox+(cp%W+.5)*c,y=oy+((cp/W|0)+.5)*c;if(x<-40||y<-40||x>innerWidth+40||y>innerHeight+40)continue;
+ for(let i=0;i<NEU&&typeof NEWCAP==='undefined';i++){const cp=CAPC[i];if(cp<0||co[cp]!==i)continue;const x=ox+(cp%W+.5)*c,y=oy+((cp/W|0)+.5)*c;if(x<-40||y<-40||x>innerWidth+40||y>innerHeight+40)continue;
   const r=Math.max(9,Math.min(16,c*2.2));cx.beginPath();cx.arc(x,y,r,0,6.3);cx.fillStyle=COL[i];cx.fill();cx.lineWidth=2;cx.strokeStyle='#fff';cx.stroke();
   cx.font='bold '+(r*.8)+'px sans-serif';cx.fillStyle=LT(COL[i])?'#000':'#fff';cx.fillText(fmt(T[i]),x,y);flag(cx,x+r+2,y+r*.5,i,Math.max(12,r*1.3),Math.max(8,r*.9));
   if(c>=3){cx.font=(r*1.2)+'px sans-serif';cx.fillText('👑',x,y-r-6);}
