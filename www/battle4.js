@@ -29,7 +29,7 @@ function drawDeco(g){if(!BT||!BT.deco)return;const nv=BT.o.naval;g.save();g.glob
  if(!nv){g.globalAlpha=.55;g.font='22px sans-serif';g.textAlign='center';g.textBaseline='middle';for(const p of BT.deco)if(p[3])g.fillText('🌲',p[0],p[1]);}
  g.restore();}
 const _sb4=startBattle;
-startBattle=function(o){SW=innerWidth;SH=innerHeight;BW=Math.round(SW*2);BH=Math.round(SH*1.7);_sb4(o);
+startBattle=function(o){SW=innerWidth;SH=innerHeight;BW=Math.round(SW*2);BH=Math.max(560,Math.round(SH*1.7));_sb4(o);
  if(!BX.zb)buildCamUI();if(!BX._cam){BX._cam=1;setupCamEvents();}
  GP.clear();GG=null;BT.deco=[];for(let i=0;i<80;i++){const x=Math.random()*BW,y=Math.random()*BH;if(Math.abs(y-BH/2)<30)continue;BT.deco.push([x,y,18+Math.random()*50,Math.random()<.3?1:0]);}
  updView();CAM.z=Math.max(zMin(),.85);const us=selUnits(0,-1),c=us.length?cen(us):[BW/2,BH/2+140];
