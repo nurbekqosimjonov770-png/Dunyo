@@ -22,8 +22,8 @@ const RGS=[
 [1.3,1.2,[-72,-55,-70,-40,-70,-30,-70,-20,-75,-10,-78,0,-76,8]],[.5,1,[-84,34,-80,38,-76,41,-72,44]],[.7,1.2,[6,60,10,63,14,66,19,68]],
 [.5,1,[-5,57]],[.6,1,[14,45,19,43,21,41]],[.6,.6,[9,44.5,12,43,15,41]],[.35,3,[-4,40]],[.4,5,[55,33]],[.5,1,[150,-37,152,-27,146,-17]],
 [.6,2,[100,52]],[.5,3,[130,65]],[.6,1,[137,36]],[.4,1,[128,38]],[.6,.5,[121,24]],[.4,1,[40,22,43,17]],[.5,1,[44,15]],[.4,1,[47,-19]],[.7,1.5,[140,-5]]];
-const RG=RGS.map(r=>{const p=r[2];let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(let k=0;k<p.length;k+=2){x0=Math.min(x0,p[k]);x1=Math.max(x1,p[k]);y0=Math.min(y0,p[k+1]);y1=Math.max(y1,p[k+1]);}const m=3*r[1];return{h:r[0],s:r[1],p,x0:x0-m,x1:x1+m,y0:y0-m,y1:y1+m};});
-function elev(lo,la){let z=0;for(const r of RG){if(lo<r.x0||lo>r.x1||la<r.y0||la>r.y1)continue;const p=r.p;let d2=1e9;
+const RGN=RGS.map(r=>{const p=r[2];let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(let k=0;k<p.length;k+=2){x0=Math.min(x0,p[k]);x1=Math.max(x1,p[k]);y0=Math.min(y0,p[k+1]);y1=Math.max(y1,p[k+1]);}const m=3*r[1];return{h:r[0],s:r[1],p,x0:x0-m,x1:x1+m,y0:y0-m,y1:y1+m};});
+function elev(lo,la){let z=0;for(const r of RGN){if(lo<r.x0||lo>r.x1||la<r.y0||la>r.y1)continue;const p=r.p;let d2=1e9;
   if(p.length===2)d2=(lo-p[0])**2+(la-p[1])**2;
   else for(let k=0;k<p.length-2;k+=2){const ax=p[k],ay=p[k+1],vx=p[k+2]-ax,vy=p[k+3]-ay,t=Math.max(0,Math.min(1,((lo-ax)*vx+(la-ay)*vy)/(vx*vx+vy*vy||1))),dx=lo-(ax+vx*t),dy=la-(ay+vy*t),dd=dx*dx+dy*dy;if(dd<d2)d2=dd;}
   z+=r.h*Math.exp(-d2/(2*r.s*r.s));}return z;}
