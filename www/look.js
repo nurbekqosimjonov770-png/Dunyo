@@ -33,6 +33,20 @@ const TROr=[[-62,-4,13,8],[22,-1,9,6],[101,15,7,8],[113,-1,16,6],[-84,10,6,4],[-
 const STPr=[[65,48,35,5],[-100,41,10,8],[18,8,25,4],[30,-12,14,5],[-60,-14,12,6]];
 const gw=(lo,la,L)=>{let m=0;for(const e of L){const dx=(lo-e[0])/e[2],dy=(la-e[1])/e[3],v=Math.exp(-(dx*dx+dy*dy)*1.3);if(v>m)m=v;}return m;};
 const cl=(v,a,b)=>v<a?a:v>b?b:v;
+const hexc=h=>{let s=h.slice(1);if(s.length===3)s=s[0]+s[0]+s[1]+s[1]+s[2]+s[2];return[parseInt(s.slice(0,2),16),parseInt(s.slice(2,4),16),parseInt(s.slice(4,6),16)];};
+const NRG=COL.map(hexc),TN=[[0,0,0],[245,248,252],[125,110,95],[214,190,130],[55,105,60],[30,95,50],[165,170,95]];
+const IMG2=og.createImageData(QW,QH),V32=new Uint32Array(IMG2.data.buffer);
+const _pOld=paint;
+paint=function(){if(!TOK){_pOld();return;}
+ scx2(co,QA,W,H);scx2(QA,QB,W*2,H*2);const a=QB;QD.fill(0);
+ for(let y=0;y<QH;y++){const row=y*QW;for(let x=0;x<QW;x++){const i=row+x,o=a[i],r=x<QW-1?a[i+1]:o,d=y<QH-1?a[i+QW]:o;
+  if(o===SEA){if(r!==SEA)QD[i+1]|=2;if(d!==SEA)QD[i+QW]|=2;}
+  else{if(r!==o){if(r===SEA)QD[i]|=2;else QD[i]|=1;}if(d!==o){if(d===SEA)QD[i]|=2;else QD[i]|=1;}}}}
+ for(let i=0,n=QW*QH;i<n;i++){const o=a[i];if(o===SEA){V32[i]=SEAC[i];continue;}
+  const nc=NRG[o],w2=TW[i]/255,tc=TN[TNT[i]],b=QD[i];let m=LUM[i]/100;if(b&1)m*=.4;else if(b&2)m*=.72;const k=1-w2;
+  const R=(nc[0]*k+tc[0]*w2)*m,G=(nc[1]*k+tc[1]*w2)*m,Bc=(nc[2]*k+tc[2]*w2)*m;
+  V32[i]=0xFF000000|((Bc>255?255:Bc)<<16)|((G>255?255:G)<<8)|(R>255?255:R);}
+ og.putImageData(IMG2,0,0);recount();labels();};
 function buildTerrain(){const Z=new Float32Array(QW*QH);
  for(let py=0;py<QH;py++){const la=TOP-(py+.5)/QS;for(let px=0;px<QW;px++){const lo=-180+(px+.5)/QS;
   Z[py*QW+px]=elev(lo,la)+(fbm(lo*.7+50,la*.7)/.9375-.5)*.22+(fbm(px*.09,py*.09)/.9375-.5)*.14;}}
@@ -61,20 +75,6 @@ function buildTerrain(){const Z=new Float32Array(QW*QH);
    const R=cl(47*(1-t)+11*t+nz,0,255)|0,G=cl(111*(1-t)+42*t+nz,0,255)|0,Bl=cl(153*(1-t)+69*t+nz,0,255)|0;
    SEAC[py*QW+px]=(0xFF000000|(Bl<<16)|(G<<8)|R);}}}
 let TOK=false;try{buildTerrain();TOK=true;}catch(e){}
-const hexc=h=>{let s=h.slice(1);if(s.length===3)s=s[0]+s[0]+s[1]+s[1]+s[2]+s[2];return[parseInt(s.slice(0,2),16),parseInt(s.slice(2,4),16),parseInt(s.slice(4,6),16)];};
-const NRG=COL.map(hexc),TN=[[0,0,0],[245,248,252],[125,110,95],[214,190,130],[55,105,60],[30,95,50],[165,170,95]];
-const IMG2=og.createImageData(QW,QH),V32=new Uint32Array(IMG2.data.buffer);
-const _pOld=paint;
-paint=function(){if(!TOK){_pOld();return;}
- scx2(co,QA,W,H);scx2(QA,QB,W*2,H*2);const a=QB;QD.fill(0);
- for(let y=0;y<QH;y++){const row=y*QW;for(let x=0;x<QW;x++){const i=row+x,o=a[i],r=x<QW-1?a[i+1]:o,d=y<QH-1?a[i+QW]:o;
-  if(o===SEA){if(r!==SEA)QD[i+1]|=2;if(d!==SEA)QD[i+QW]|=2;}
-  else{if(r!==o){if(r===SEA)QD[i]|=2;else QD[i]|=1;}if(d!==o){if(d===SEA)QD[i]|=2;else QD[i]|=1;}}}}
- for(let i=0,n=QW*QH;i<n;i++){const o=a[i];if(o===SEA){V32[i]=SEAC[i];continue;}
-  const nc=NRG[o],w2=TW[i]/255,tc=TN[TNT[i]],b=QD[i];let m=LUM[i]/100;if(b&1)m*=.4;else if(b&2)m*=.72;const k=1-w2;
-  const R=(nc[0]*k+tc[0]*w2)*m,G=(nc[1]*k+tc[1]*w2)*m,Bc=(nc[2]*k+tc[2]*w2)*m;
-  V32[i]=0xFF000000|((Bc>255?255:Bc)<<16)|((G>255?255:G)<<8)|(R>255?255:R);}
- og.putImageData(IMG2,0,0);recount();labels();};
 const CITIES=[
 ['Rim',12.5,41.9,0,1],['Afina',23.7,38,0,0],['Konstantinopol',29,41,0,1,'Istanbul',1453],['Iskandariya',29.9,31.2,0,0],['Qohira',31.2,30,969,1],['Quddus',35.2,31.8,0,0],['Damashq',36.3,33.5,0,0],
 ["Bag'dod",44.4,33.3,762,1],['Tehron',51.4,35.7,1790,1],['Isfahon',51.7,32.7,0,0],['Tabriz',46.3,38.1,0,0],['Hirot',62.2,34.3,0,0],['Kobul',69.2,34.5,0,0],['Samarqand',67,39.65,0,1],['Buxoro',64.4,39.8,0,1],
