@@ -10,7 +10,7 @@ function centerCam(){let c;if(BT.hero&&!BT.hero.dead)c=[BT.hero.u.x,BT.hero.u.y]
  CAM.x=c[0]-SW/2/CAM.z;CAM.y=c[1]-VH/2/CAM.z;camClamp();}
 function buildCamUI(){const z=dv('position:absolute;right:6px;top:45%;display:flex;flex-direction:column;gap:6px;z-index:4');
  const b=(t,f)=>mkb(t,f,'width:42px;height:42px;padding:0;margin:0;font-size:20px;border-radius:50%;background:#000a;color:#fff;border:2px solid #fc6');
- z.appendChild(b('＋',()=>bzoom(SW/2,VT+VH/2,1.3)));z.appendChild(b('－',()=>bzoom(SW/2,VT+VH/2,1/1.3)));z.appendChild(b('🎯',centerCam));
+ z.appendChild(b('＋',()=>bzoom(SW/2,VT+VH/2,1.3)));z.appendChild(b('－',()=>bzoom(SW/2,VT+VH/2,1/1.3)));
  BX.box.appendChild(z);BX.zb=z;}
 function setupCamEvents(){const cv=BX.cv;
  cv.addEventListener('pointerdown',e=>{if(!BT)return;cv.setPointerCapture(e.pointerId);GP.set(e.pointerId,[e.clientX,e.clientY,e.clientX,e.clientY]);if(GP.size===1)GG={moved:false,multi:false,pd:0,mx:null,my:0};else if(GG)GG.multi=true;});
