@@ -1,0 +1,6 @@
+const fs=require('fs');
+function P(file,a,b,mark,name){try{const s=fs.readFileSync(file,'utf8');if(s.includes(mark)){console.log('allaqachon:',name);return;}if(s.split(a).length!==2){console.log('TOPILMADI:',name);return;}fs.writeFileSync(file,s.split(a).join(b));console.log('OK:',name);}catch(e){console.log('XATO:',name,e.message);}}
+P('www/game.js','function autoWar(a,d,n,commit,Td){const fort=',"function autoWar(a,d,n,commit,Td){if(typeof autoWarX==='function')return autoWarX(a,d,n,commit,Td);const fort=",'typeof autoWarX','jang hisobi');
+P('www/game2.js','const cap=cnt[i]*1.5+100;if(T[i]<cap)T[i]+=Math.max(1,cnt[i]*.03);',"if(typeof growX==='function')growX(i);else{const cap=cnt[i]*1.5+100;if(T[i]<cap)T[i]+=Math.max(1,cnt[i]*.03);}",'typeof growX','askar osishi');
+P('www/allies.js','if(commit<Td*.9)continue;',"if(typeof aiOK==='function'?!aiOK(o,q,n,commit,Td):commit<Td*.9)continue;",'typeof aiOK','AI qarori');
+try{let e=fs.readFileSync('www/eras.js','utf8');if(!e.includes('balance.js')){const m=/document\.write\('([^']*)'\)/.exec(e);if(!m){console.log('TOPILMADI: eras.js');}else{e=e.replace(m[0],()=>"document.write('"+m[1]+"<script src=\"balance.js\"></script>')");fs.writeFileSync('www/eras.js',e);console.log('OK: balance.js ulandi');}}else console.log('allaqachon: balance.js');}catch(e){console.log('XATO eras.js',e.message);}

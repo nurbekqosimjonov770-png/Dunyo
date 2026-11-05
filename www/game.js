@@ -93,7 +93,7 @@ function battleDone(o,sa,sd,bonus){const adv=sa-sd,lossA=o.commit*(1-sa),kill=o.
  let got=0,D=0;if(adv>.05){D=Math.max(1,Math.round((2+adv*12)*(o.fort?.6:1))+(bonus||0));got=capture(o.a,o.d,o.cell,D);}
  return{lossA:Math.round(lossA),kill:Math.round(kill),got,D};}
 function afterBattle(){tgt=null;if(dirty){paint();dirty=false;}if(me>=0&&!over)start();hud();draw();}
-function autoWar(a,d,n,commit,Td){const fort=d<NEU&&fortAt(n,d),df=Td*(fort?1.5:1)*(.8+Math.random()*.4),at=commit*(.8+Math.random()*.4),adv=(at-df)/(at+df);
+function autoWar(a,d,n,commit,Td){if(typeof autoWarX==='function')return autoWarX(a,d,n,commit,Td);const fort=d<NEU&&fortAt(n,d),df=Td*(fort?1.5:1)*(.8+Math.random()*.4),at=commit*(.8+Math.random()*.4),adv=(at-df)/(at+df);
  T[a]=Math.max(1,T[a]-Math.min(commit,commit*(.1+.6*df/at)));if(d<NEU)T[d]=Math.max(5,T[d]-Math.min(Td,Td*.6*at/df));
  return adv>.05?capture(a,d,n,Math.max(1,Math.round((2+adv*8)*(fort?.6:1)))):0;}
 function aiTurn(){const fr=[];for(let i=0;i<NEU;i++)fr.push([]);

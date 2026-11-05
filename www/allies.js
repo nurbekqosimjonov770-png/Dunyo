@@ -28,7 +28,7 @@ aiTurn=function(){const fr=[];for(let i=0;i<NEU;i++)fr.push([]);
   const L=fr[o],ok=[];for(let k=0;k<L.length;k+=2){const q=co[L[k+1]];if(q<NEU&&(peaceMode||allied(o,q)))continue;if(q===me&&peace[o]>months)continue;ok.push(k);}
   if(!ok.length)continue;let pick=ok[Math.floor(Math.random()*ok.length)];
   if(Math.random()<.6){const pref=ok.filter(k=>{const q=co[L[k+1]];if(q===NEU)return peaceMode||(ALY[o]>=0&&ALY[o]===mb);if(ALY[o]<0)return false;if(ALY[o]===mb)return HOST[q]>months;return ALY[q]>=0&&ALY[q]!==ALY[o];});if(pref.length)pick=pref[Math.floor(Math.random()*pref.length)];}
-  const n=L[pick+1],q=co[n],commit=T[o]*.5,Td=q===NEU?35:T[q]*.4;if(commit<Td*.9)continue;
+  const n=L[pick+1],q=co[n],commit=T[o]*.5,Td=q===NEU?35:T[q]*.4;if(typeof aiOK==='function'?!aiOK(o,q,n,commit,Td):commit<Td*.9)continue;
   const got=autoWar(o,q,n,commit,Td);
   if(q===me&&got>0){msg="⚠️ "+N[K[o]][0]+" hujum qildi: "+got+" hudud yo'qotildi";mt=Date.now()+5000;}}};
 findRoute=function(t){if(me<0||t<0||co[t]===SEA||co[t]===me||allied(me,co[t]))return null;

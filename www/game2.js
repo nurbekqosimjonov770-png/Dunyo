@@ -54,7 +54,7 @@ recruit=function(i,c){const t=tierOf(me),k=ucost(i,t);if(gold<k[0]||silv<k[1]||o
 buyShip=function(c){const k=shipCost(tierOf(me));if(gold<k[0]||silv<k[1]||oil<k[2]){note('Resurs yetmaydi');return;}gold-=k[0];silv-=k[1];oil-=k[2];ships++;sfx('coin');panelOwn(c);hud();draw();};
 tick=function(){if(over)return;months++;events();
  const mm=1+.25*tierOf(me);
- for(let i=0;i<NEU;i++){if(cnt[i]===0){T[i]=0;continue;}const cap=cnt[i]*1.5+100;if(T[i]<cap)T[i]+=Math.max(1,cnt[i]*.03);}
+ for(let i=0;i<NEU;i++){if(cnt[i]===0){T[i]=0;continue;}if(typeof growX==='function')growX(i);else{const cap=cnt[i]*1.5+100;if(T[i]<cap)T[i]+=Math.max(1,cnt[i]*.03);}}
  gold+=cnt[me]*.02*mm;
  for(const b of B){const o=co[b[0]];if(o>=NEU)continue;if(b[1]===1)T[o]+=2;if(o===me&&b[1]===2)gold+=3*mm;}
  for(const s of SITE){if(co[s[0]]!==me)continue;if(s[1]===1)gold+=2*mm;else if(s[1]===2)silv+=1.2*mm;else oil+=.8*mm;}
