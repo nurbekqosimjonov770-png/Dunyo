@@ -101,7 +101,7 @@ function drawCaps(c,capSet){const yr=E.y+Math.floor(months/12);cx.textAlign='cen
  for(let i=0;i<NEU;i++){const cp=CAPC[i];if(cp<0||co[cp]!==i)continue;const x=ox+(cp%W+.5)*c,y=oy+(((cp/W)|0)+.5)*c;if(x<-60||y<-60||x>innerWidth+60||y>innerHeight+60)continue;
   const R=Math.max(11,Math.min(20,c*2.6)),ct=capNm(i);if(ct)capSet.add(ct);
   cx.beginPath();cx.arc(x,y,R,0,6.3);cx.fillStyle=COL[i];cx.fill();cx.lineWidth=i===me?4:3;cx.strokeStyle=i===me?'#fd0':'#fff';cx.stroke();
-  cx.font=(R*1.05)+'px sans-serif';cx.fillStyle='#fff';cx.fillText(emb(i),x,y+1);
+  if(!(typeof flagDisc==='function'&&flagDisc(cx,x,y,R,i))){cx.font=(R*1.05)+'px sans-serif';cx.fillStyle='#fff';cx.fillText(emb(i),x,y+1);}
   const t=fmt(T[i]);cx.font='bold '+(R*.72)+'px sans-serif';const tw=cx.measureText(t).width+10,ph=R*.9;
   cx.fillStyle='#000c';cx.beginPath();if(cx.roundRect)cx.roundRect(x-tw/2,y+R+1,tw,ph,4);else cx.rect(x-tw/2,y+R+1,tw,ph);cx.fill();cx.fillStyle='#fff';cx.fillText(t,x,y+R+1+ph/2);
   if(c>=2.5){cx.font=(R*.9)+'px sans-serif';cx.fillText('👑',x,y-R-6);}

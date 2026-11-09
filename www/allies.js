@@ -12,6 +12,7 @@ const ALD={
 1910:{n:["Antanta","Markaziy davlatlar"],b:[['G','F','R','J','Z'],['D','H','I']],e:[[55,"1914-avgust: Usmonlilar Markaziy davlatlarga, Belgiya Antantaga qo'shildi",[['T',1],['B',0]]],[64,"1915: Italiya Antantaga o'tdi",[['I',0]]],[87,"1917: AQSh Antantaga qo'shildi",[['U',0]]]]},
 1939:{n:["O'q davlatlari","Ittifoqchilar"],b:[['D','I','S'],['G','F','P','T']],e:[[20,"1940: Yaponiya Uchlik paktiga qo'shildi",[['J',0]]],[22,"1940: Vengriya va Ruminiya O'q davlatlariga qo'shildi",[['H',0],['R',0]]],[29,"1941: SSSR Ittifoqchilarga o'tdi, Finlyandiya Germaniya tomonida",[['S',1],['W',0]]],[35,"1941-dekabr: AQSh va Xitoy Ittifoqchilarga qo'shildi",[['U',1],['C',1]]]]},
 2020:{n:["G'arb bloki","Sharq bloki"],b:[['U','G','F','D','T','P','H','Q','K','J','S','X'],['R','C','N','E','A']],e:[]}};
+if(typeof ALDX!=='undefined')Object.assign(ALD,ALDX);
 let ALY=new Array(NEU).fill(-1),BN=[],nextBloc=0,peaceMode=false;const HOST={};
 (function(){const d=ALD[E.y];if(!d)return;let mx=d.b.length;
  d.b.forEach((g,bi)=>{g.forEach(k=>{const i=K.indexOf(k);if(i>=0)ALY[i]=bi;});});
