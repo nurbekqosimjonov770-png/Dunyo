@@ -63,8 +63,8 @@ const _sb5=startBattle;startBattle=function(o){if(o.d<NEU)HOST[o.d]=months+36;le
 const _bd3=battleDone;battleDone=function(o,sa,sd,bonus){if(o.allyB)o.commit-=o.allyB;return _bd3(o,sa,sd,bonus);};
 const _tk4=tick;tick=function(){_tk4();if(over||me<0)return;
  let sh=cnt[me];for(let i=0;i<NEU;i++)if(allied(me,i))sh+=cnt[i];sh/=land;
- if(peaceMode&&cnt[NEU]===0){over=true;msg="☮ Tinch yakun: ittifoqingiz dunyoning "+Math.round(sh*100)+"% ini egalladi!";mt=1e15;hud();}
- else if(sh>.6&&ALY[me]>=0){over=true;msg="🤝 Ittifoq g'alabasi! Birgalikda dunyoning "+Math.round(sh*100)+"% ini egalladingiz!";mt=1e15;hud();}};
+ if(peaceMode&&cnt[NEU]===0&&sh>.9){over=true;msg="☮ Tinch yakun: ittifoqingiz dunyoning "+Math.round(sh*100)+"% ini egalladi!";mt=1e15;hud();}
+ else if(sh>.9&&ALY[me]>=0){over=true;msg="🤝 Ittifoq g'alabasi! Birgalikda dunyoning "+Math.round(sh*100)+"% ini egalladingiz!";mt=1e15;hud();}};
 function drawAllies(c){if(me<0)return;cx.textAlign='center';cx.textBaseline='middle';
  for(let i=0;i<NEU;i++){if(ALY[i]<0)continue;const cp=CAPC[i];if(cp<0||co[cp]!==i)continue;const x=ox+(cp%W+.5)*c,y=oy+(((cp/W)|0)+.5)*c;if(x<-30||y<-30||x>innerWidth+30||y>innerHeight+30)continue;
   const r=Math.max(9,Math.min(16,c*2.2));cx.beginPath();cx.arc(x,y,r+3,0,6.3);cx.lineWidth=3;cx.strokeStyle=BC[ALY[i]%BC.length];cx.stroke();

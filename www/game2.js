@@ -62,7 +62,7 @@ tick=function(){if(over)return;months++;events();
  if(co[CAPC[me]]===me)gold+=5*mm;
  for(let i=0;i<NEU;i++)if(i!==me&&FB[i]>=0&&cnt[i]>0&&Math.random()<.04&&FLT[i]<cnt[i]/6+2)FLT[i]++;
  aiTurn();if(dirty){paint();dirty=false;}
- if(cnt[me]===0){over=true;msg="Yutqazdingiz!";mt=1e15;}else if(cnt[me]>land*.5){over=true;msg="G'alaba! Dunyo sizniki!";mt=1e15;}
+ if(cnt[me]===0){over=true;msg="Yutqazdingiz!";mt=1e15;}else if(cnt[me]>land*.9){over=true;msg="G'alaba! Dunyo sizniki!";mt=1e15;}
  hud();draw();};
 save=function(){try{let s='';for(let i=0;i<co.length;i++)s+=String.fromCharCode(48+(co[i]===SEA?60:co[i]));localStorage.setItem('d1775y'+E.y,JSON.stringify({me,co:s,T,F,gold,silv,oil,months,peace,trade,B,capLost,ships,planes,tb,FLT}));}catch(e){}};
 load=function(sv){me=sv.me;for(let i=0;i<co.length;i++){const v=sv.co.charCodeAt(i)-48;co[i]=v===60?SEA:v;}sv.T.forEach((v,i)=>T[i]=v);sv.F.forEach((v,i)=>F[i]=v);gold=sv.gold;silv=sv.silv;oil=sv.oil;months=sv.months;peace=sv.peace;trade=sv.trade;B.length=0;sv.B.forEach(b=>B.push(b));capLost=sv.capLost||{};ships=sv.ships||0;planes=sv.planes||0;tb=sv.tb||0;if(sv.FLT)sv.FLT.forEach((v,i)=>FLT[i]=v);};
