@@ -54,7 +54,7 @@ function paint(){og.clearRect(0,0,oc.width,oc.height);let last='';
 function draw(){
  cx.fillStyle='#0b2a45';cx.fillRect(0,0,innerWidth,innerHeight);
  const c=c0*sc;cx.imageSmoothingEnabled=true;cx.imageSmoothingQuality='high';
- cx.drawImage(oc,ox,oy,W*c,H*c);
+ cx.drawImage(oc,ox,oy,W*c,H*c);if(typeof drawCoast==='function')drawCoast(c);
  cx.textAlign='center';cx.textBaseline='middle';
  if(c<7){cx.lineWidth=3;cx.strokeStyle='#000c';cx.fillStyle='#fff';
   for(const L of LB){const nm=N[K[L[0]]][0].toUpperCase(),f=Math.min(26,Math.sqrt(L[3])*c*1.1/(.68*nm.length));if(f<9)continue;
