@@ -86,7 +86,7 @@ const _peC=panelEnemy;panelEnemy=function(){_peC();if(me<0||!tgt||tgt.fleet||tgt
 const _drC=draw;const HPC=document.createElement('canvas');HPC.width=HPC.height=8;{const g=HPC.getContext('2d');g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=1.3;g.beginPath();g.moveTo(0,8);g.lineTo(8,0);g.moveTo(-2,2);g.lineTo(2,-2);g.moveTo(6,10);g.lineTo(10,6);g.stroke();}
 let HPAT=null;
 draw=function(){_drC();const c=c0*sc;if(me<0||c<1.1||!CSET.size)return;if(!HPAT)HPAT=cx.createPattern(HPC,'repeat');
- cx.save();cx.fillStyle=HPAT;cx.globalAlpha=.5;for(const k of CSET){const x=ox+(k%W)*c,y=oy+((k/W)|0)*c;if(x<-c||y<-c||x>innerWidth||y>innerHeight)continue;cx.fillRect(x,y,c+.5,c+.5);}cx.restore();
+ cx.save();cx.fillStyle=HPAT;cx.globalAlpha=.5;for(const k of ((window.INTER||window.PERF>=1)?[]:CSET)){const x=ox+(k%W)*c,y=oy+((k/W)|0)*c;if(x<-c||y<-c||x>innerWidth||y>innerHeight)continue;cx.fillRect(x,y,c+.5,c+.5);}cx.restore();
  if(c>=1.4&&typeof flag==='function')for(const m of CMK){const x=ox+(m.x+.5)*c,y=oy+(m.y+.5)*c;if(x<-30||y<-30||x>innerWidth+30||y>innerHeight+30)continue;
   flag(cx,x,y,m.o,Math.max(10,c*1.4),Math.max(7,c*.95));
   if(m.o===me&&c>=2.5){const u=CUN[me]/100;cx.fillStyle='#000a';cx.fillRect(x-12,y+3,24,5);cx.fillStyle=u<.4?'#3c3':u<.7?'#fc3':'#e33';cx.fillRect(x-11,y+4,22*u,3);}}};
