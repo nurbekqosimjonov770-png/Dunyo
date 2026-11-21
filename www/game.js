@@ -169,7 +169,7 @@ document.getElementById('zo').onclick=()=>zoomAt(innerWidth/2,innerHeight/2,1/1.
 const ptr=new Map();let pd=0,mv=false,s0=[0,0];
 cv.addEventListener('pointerdown',e=>{cv.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);mv=false;s0=[e.clientX,e.clientY];pd=0;});
 cv.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;const o=ptr.get(e.pointerId);
- if(ptr.size===1){if(Math.abs(e.clientX-s0[0])+Math.abs(e.clientY-s0[1])>8)mv=true;if(mv){ox+=e.clientX-o[0];oy+=e.clientY-o[1];draw();}}
+ if(ptr.size===1){if(Math.abs(e.clientX-s0[0])+Math.abs(e.clientY-s0[1])>16)mv=true;if(mv){ox+=e.clientX-o[0];oy+=e.clientY-o[1];draw();}}
  ptr.set(e.pointerId,[e.clientX,e.clientY]);
  if(ptr.size===2){mv=true;const v=[...ptr.values()],d=Math.hypot(v[0][0]-v[1][0],v[0][1]-v[1][1]);if(pd)zoomAt((v[0][0]+v[1][0])/2,(v[0][1]+v[1][1])/2,d/pd);pd=d;}});
 cv.addEventListener('pointerup',e=>{const was=ptr.size===1&&!mv;ptr.delete(e.pointerId);pd=0;if(was)tap(e.clientX,e.clientY);});
