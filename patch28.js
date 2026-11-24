@@ -1,0 +1,3 @@
+const fs=require('fs');
+try{let g=fs.readFileSync('www/game.js','utf8');const a='Math.abs(e.clientY-s0[1])>16)mv=true;';if(g.includes(a)){g=g.replace(a,()=>'Math.abs(e.clientY-s0[1])>8)mv=true;');fs.writeFileSync('www/game.js',g);console.log('OK: bosish chegarasi eski holiga qaytdi');}else console.log('allaqachon: game.js');}catch(e){console.log('XATO: game.js');}
+try{let h=fs.readFileSync('www/index.html','utf8');if(!h.includes('art.js')){const a='<script src="eras.js"></script>';if(h.includes(a)){h=h.replace(a,()=>a+'\n<script src="art.js"></script>');fs.writeFileSync('www/index.html',h);console.log('OK: art.js ulandi');}else console.log('TOPILMADI: index.html');}else console.log('allaqachon: art.js');}catch(e){console.log('XATO: index.html');}
