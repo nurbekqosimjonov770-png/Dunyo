@@ -10,12 +10,13 @@ body{margin:0;background:#0b2a45;color:#fff;font-family:sans-serif;overflow:hidd
 #bot button{flex:1;padding:12px;font-size:16px;border:0;border-radius:8px}
 #pn{position:fixed;bottom:56px;left:0;right:0;padding:8px;background:#000c;z-index:2;display:none;text-align:center;font-size:14px}
 canvas{display:block}
+#menu.hold{visibility:hidden}
 </style></head><body>
 <div id="top"><span id="info">Davlatni tanlang</span></div>
 <canvas id="c"></canvas>
 <div id="pn"></div>
 <div id="bot"><button id="hm">🏠</button><button id="zi">+</button><button id="zo">-</button><button id="bz">💱</button><button id="mu">🎵</button><button id="sp">1x</button></div>
-<div id="menu"><h2>Dunyo tarixi</h2><p>Davrni tanlang:</p></div>
+<div id="menu" class="hold"><h2>Dunyo tarixi</h2><p>Davrni tanlang:</p></div>
 <script src="map.js"></script>
 <script src="eras2.js"></script>
 <script src="eras3.js"></script>
@@ -23,4 +24,5 @@ canvas{display:block}
 <script src="eras5.js"></script>
 <script src="eras.js"></script>
 <script src="art.js"></script>
+<script>setTimeout(function(){var m=document.getElementById('menu');if(m)m.classList.remove('hold');},3500);</script>
 </body></html>
