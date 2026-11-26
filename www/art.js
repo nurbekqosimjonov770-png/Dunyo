@@ -1,7 +1,7 @@
 (function(){
 if(window.__art)return;window.__art=1;
 const menu=document.getElementById('menu');if(!menu)return;
-const reveal=()=>{menu.classList.remove('hold');};
+const reveal=()=>{menu.classList.remove('hold');if(window.__ready)window.__ready();};
 try{
 const st=document.createElement('style');
 st.textContent='.eraCard{display:flex;flex-direction:column;justify-content:flex-end;text-align:left;width:92%;height:96px;margin:9px auto;padding:8px 14px;border:1px solid #fc6a;border-radius:10px;color:#fff;background:#1a3550;position:relative;overflow:hidden;box-shadow:0 3px 10px #0008}.eraCard canvas,.eraCard .cu{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}.eraCard .cu{transition:opacity .4s}.eraCard:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.6),rgba(0,0,0,.05));z-index:0}.eraCard .y,.eraCard .t{position:relative;z-index:1}.eraCard .y{font-size:40px;font-weight:bold;line-height:1;text-shadow:0 2px 8px #000,0 0 3px #000}.eraCard .t{font-size:13px;text-shadow:0 1px 4px #000;margin-top:3px}.natCard{display:flex;align-items:center;gap:12px;text-align:left;width:86%;padding:8px 12px;border:1px solid #fff5;border-radius:10px;position:relative;overflow:hidden;color:#fff!important}.natCard canvas{width:60px;height:40px;border:1px solid #fff;border-radius:3px;flex:none}.natCard .n{font-size:16px;font-weight:bold;text-shadow:0 1px 3px #0009}.natCard .r{font-size:12px;opacity:.9;text-shadow:0 1px 3px #0009}.natCard .e{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:44px;opacity:.28}@media (orientation:landscape){.eraCard{width:46%;display:inline-flex;margin:7px 1.5%;height:88px}.natCard{display:inline-flex;width:44%;margin:5px 1%}}';
